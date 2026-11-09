@@ -7,6 +7,7 @@ from collections.abc import Iterable
 from collections.abc import Iterator
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import wait
 
 from conda.base.context import context
 from conda.core.prefix_data import PrefixData
@@ -28,6 +29,7 @@ from .report import render
 from .report import version_result
 
 WORKERS = 8
+BUDGET = 30.0  # seconds for API lookups per channel
 
 
 def _specs(
@@ -68,14 +70,29 @@ def _entry(
     return Entry(blocked.label, blocked.why, tuple(results))
 
 
-def _note(channel: PolicyChannel) -> str | None:
+def _site_note(channel: PolicyChannel) -> list[str]:
     default = default_site_domain()
     if default == channel.auth_domain:
-        return None
-    return (
+        return []
+    return [
         f"channel authenticates against {channel.auth_domain};"
         f" your default anaconda-auth site is {default}"
-    )
+    ]
+
+
+def _lookup(
+    api: PolicyApi,
+    channel: PolicyChannel,
+    wanted: list[Blocked],
+    subdirs: Sequence[str],
+) -> tuple[list[Entry], int]:
+    """Entries looked up within the time budget, and how many were not."""
+    pool = ThreadPoolExecutor(WORKERS)
+    futures = [pool.submit(_entry, api, channel, b, subdirs) for b in wanted]
+    done, pending = wait(futures, timeout=BUDGET)
+    pool.shutdown(wait=False, cancel_futures=True)
+    entries = [f.result() for f in futures if f in done and f.exception() is None]
+    return entries, len(pending)
 
 
 def explain(requested: Iterable[MatchSpec], packages: Iterable[object]) -> list[str]:
@@ -95,9 +112,11 @@ def explain(requested: Iterable[MatchSpec], packages: Iterable[object]) -> list[
         policy = api.channel_policy(channel.org, channel.channel)
         if policy is None:
             continue
-        with ThreadPoolExecutor(WORKERS) as pool:
-            entries = list(pool.map(lambda b: _entry(api, channel, b, subdirs), wanted))
-        section = render(channel, policy, entries, _note(channel))
+        entries, unchecked = _lookup(api, channel, wanted, subdirs)
+        notes = _site_note(channel)
+        if unchecked:
+            notes.append(f"{unchecked} more packages not checked within {BUDGET:.0f}s")
+        section = render(channel, policy, entries, notes)
         if section:
             sections.append(section)
     return sections

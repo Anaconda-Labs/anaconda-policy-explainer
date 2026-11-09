@@ -13,7 +13,6 @@ from conda.models.channel import Channel
 from conda.models.match_spec import MatchSpec
 from conda.models.records import PackageRecord
 
-from anaconda_policy_explainer.candidates import AllBlocked
 from anaconda_policy_explainer.candidates import Missing
 from anaconda_policy_explainer.candidates import find_blocked
 
@@ -41,13 +40,13 @@ def blocked(*specs: str, installed: list[PackageRecord] | None = None):
 
 def test_requested_name_removed():
     findings = blocked("jinja2")
-    assert findings.missing == [Missing(MatchSpec("jinja2"), None)]
+    assert findings.missing == [Missing(MatchSpec("jinja2"), True, ())]
     assert findings.blocked == []
 
 
 def test_requested_version_removed():
     findings = blocked("python=3.13")
-    assert findings.missing == [Missing(MatchSpec("python=3.13"), None)]
+    assert findings.missing == [Missing(MatchSpec("python=3.13"), True, ())]
 
 
 def test_satisfiable_spec_has_no_findings():
@@ -58,28 +57,39 @@ def test_satisfiable_spec_has_no_findings():
 
 def test_dependency_removed():
     findings = blocked("altair")
-    assert findings.missing == [Missing(MatchSpec("jinja2"), "altair-6.0.0-py314h0_0")]
-    assert findings.blocked == [AllBlocked(MatchSpec("altair"))]
+    assert findings.missing == [
+        Missing(MatchSpec("jinja2"), False, ("altair-6.0.0-py314h0_0",))
+    ]
+    assert findings.blocked == [MatchSpec("altair")]
 
 
 def test_surviving_build_needs_removed_dependency():
     findings = blocked("urllib3")
     assert findings.missing == [
         Missing(
-            MatchSpec("python >=3.15,<3.16.0a0"),
-            "urllib3-2.6.3-py315h0_1",
+            MatchSpec("python >=3.15,<3.16.0a0"), False, ("urllib3-2.6.3-py315h0_1",)
         )
     ]
-    assert findings.blocked == [AllBlocked(MatchSpec("urllib3"))]
+    assert findings.blocked == [MatchSpec("urllib3")]
 
 
-def test_blocked_transitively():
+def test_blocked_transitively_reports_leaf_and_request():
     findings = blocked("requests")
     assert [m.spec for m in findings.missing] == [MatchSpec("python >=3.15,<3.16.0a0")]
-    assert findings.blocked == [
-        AllBlocked(MatchSpec("requests")),
-        AllBlocked(MatchSpec("urllib3 >=1.26")),
-    ]
+    assert findings.blocked == [MatchSpec("requests")]
+
+
+def test_every_parent_of_a_missing_spec_is_kept():
+    findings = blocked("urllib3", "oldlib")
+    needed_by = {m.spec: m.needed_by for m in findings.missing}
+    assert needed_by[MatchSpec("python >=3.15,<3.16.0a0")] == (
+        "urllib3-2.6.3-py315h0_1",
+    )
+    assert needed_by[MatchSpec("python >=3.15")] == (
+        "oldlib-4.0-h0_0",
+        "oldlib-3.0-h0_0",
+        "oldlib-2.0-h0_0",
+    )
 
 
 def test_installed_record_satisfies_removed_dependency():
@@ -96,7 +106,7 @@ def test_one_usable_build_keeps_spec_satisfiable():
 
 def test_only_newest_versions_are_followed():
     # oldlib 1.0 is usable, but a solver would try 4.0, 3.0 and 2.0 first
-    assert blocked("oldlib").blocked == [AllBlocked(MatchSpec("oldlib"))]
+    assert blocked("oldlib").blocked == [MatchSpec("oldlib")]
     assert blocked("oldlib <2").blocked == []
 
 

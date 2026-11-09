@@ -8,7 +8,6 @@ from conda.models.match_spec import MatchSpec
 from anaconda_policy_explainer.api import ChannelPolicy
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.api import parse_versions
-from anaconda_policy_explainer.candidates import AllBlocked
 from anaconda_policy_explainer.candidates import Findings
 from anaconda_policy_explainer.candidates import Missing
 from anaconda_policy_explainer.channels import PolicyChannel
@@ -99,12 +98,15 @@ def test_shorten_keeps_non_cve_reasons():
 def test_group_by_package_requested_first():
     findings = Findings(
         missing=[
-            Missing(MatchSpec("python >=3.15,<3.16.0a0"), "urllib3-2.6.3-py315h0_1"),
-            Missing(MatchSpec("python >=3.13,<3.14.0a0"), "pycparser-3.12-py313h0_0"),
-            Missing(MatchSpec("python >=3.15,<3.16.0a0"), "cffi-2.0-py315h0_0"),
-            Missing(MatchSpec("jinja2"), None),
+            Missing(MatchSpec("jinja2"), True, ()),
+            Missing(
+                MatchSpec("python >=3.15,<3.16.0a0"),
+                False,
+                ("urllib3-2.6.3", "cffi-2.0"),
+            ),
+            Missing(MatchSpec("python >=3.13,<3.14.0a0"), False, ("pycparser-3.12",)),
         ],
-        blocked=[AllBlocked(MatchSpec("urllib3")), AllBlocked(MatchSpec("python"))],
+        blocked=[MatchSpec("urllib3"), MatchSpec("aiofiles==25.1.0=py313h06a4308_0")],
     )
     assert group(findings) == [
         Blocked("jinja2", (MatchSpec("jinja2"),), "requested"),
@@ -114,7 +116,7 @@ def test_group_by_package_requested_first():
                 MatchSpec("python >=3.15,<3.16.0a0"),
                 MatchSpec("python >=3.13,<3.14.0a0"),
             ),
-            "needed by urllib3-2.6.3-py315h0_1 and 2 others",
+            "needed by urllib3-2.6.3 and 2 others",
         ),
         Blocked("urllib3", (MatchSpec("urllib3"),), BLOCKED_WHY),
     ]
@@ -165,7 +167,7 @@ def test_render_section():
 
 def test_render_note():
     entries = [Entry("jinja2", "requested", (VersionResult("3.1.6", True, ()),))]
-    text = render(CHANNEL, POLICY, entries, note="channel authenticates against x")
+    text = render(CHANNEL, POLICY, entries, ["channel authenticates against x"])
     assert text is not None
     assert text.endswith("\n      note: channel authenticates against x")
 

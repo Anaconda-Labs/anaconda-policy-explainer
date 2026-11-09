@@ -27,28 +27,19 @@ NEWEST_VERSIONS = 3
 
 @dataclass(frozen=True)
 class Missing:
-    """A spec with no available match; ``needed_by`` is None when requested."""
+    """A spec with no available match, and what needed it."""
 
     spec: MatchSpec
-    needed_by: str | None
-
-
-@dataclass(frozen=True)
-class AllBlocked:
-    """A spec whose available records all depend on something missing."""
-
-    spec: MatchSpec
-
-
-Cause = Missing | AllBlocked
+    requested: bool
+    needed_by: tuple[str, ...]
 
 
 @dataclass
 class Findings:
     missing: list[Missing] = field(default_factory=list)
-    # Specs whose surviving records are all blocked; the versions a policy
-    # removed for these names may explain the failure as well.
-    blocked: list[AllBlocked] = field(default_factory=list)
+    # Requested specs that have records, all of them blocked by missing
+    # dependencies; the versions a policy removed may explain these too.
+    blocked: list[MatchSpec] = field(default_factory=list)
 
 
 def _newest(
@@ -74,49 +65,54 @@ def _dist(record: PackageRecord) -> str:
 
 
 def find_blocked(specs: Iterable[MatchSpec], query: Query) -> Findings:
-    memo: dict[str, tuple[Cause, ...]] = {}
+    specs_by_key: dict[str, MatchSpec] = {}
+    parents: dict[str, list[str]] = {}
+    has_records: dict[str, bool] = {}
+    memo: dict[str, frozenset[str]] = {}
     in_progress: set[str] = set()
 
-    def causes(spec: MatchSpec, needed_by: str | None) -> tuple[Cause, ...]:
+    def missing_under(spec: MatchSpec, parent: str | None) -> frozenset[str]:
+        """Keys of the missing specs that block ``spec`` (itself, if missing)."""
         key = str(spec)
         if spec.name.startswith("__"):  # virtual packages are not in repodata
-            return ()
-        if key in memo:
-            return memo[key]
-        if key in in_progress:  # dependency cycle: let the outer frame decide
-            return ()
-        in_progress.add(key)
-        records = _newest(query(spec))
-        result: tuple[Cause, ...] = ()
-        if not records:
-            result = (Missing(spec, needed_by),)
-        else:
-            per_record: list[tuple[Cause, ...]] = []
+            return frozenset()
+        if key not in memo and key not in in_progress:
+            in_progress.add(key)
+            specs_by_key[key] = spec
+            records = _newest(query(spec))
+            has_records[key] = bool(records)
+            blocking: set[str] = set() if records else {key}
             for record in records:
-                found = tuple(
-                    cause
-                    for dep in record.depends
-                    for cause in causes(MatchSpec(dep), _dist(record))
-                )
+                found: set[str] = set()
+                for dep in record.depends:
+                    found |= missing_under(MatchSpec(dep), _dist(record))
                 if not found:  # one usable record makes the spec satisfiable
-                    per_record = []
+                    blocking = set()
                     break
-                per_record.append(found)
-            if per_record:
-                result = (AllBlocked(spec), *(c for f in per_record for c in f))
-        in_progress.discard(key)
-        memo[key] = result
+                blocking |= found
+            in_progress.discard(key)
+            memo[key] = frozenset(blocking)
+        result = memo.get(key, frozenset())  # cycle: let the outer frame decide
+        if parent is not None and key in result and not has_records[key]:
+            if parent not in parents.setdefault(key, []):
+                parents[key].append(parent)
         return result
 
+    requested: list[str] = []
+    order: list[str] = []
     findings = Findings()
-    seen: set[Cause] = set()
     for spec in specs:
-        for cause in causes(spec, None):
-            if cause in seen:
-                continue
-            seen.add(cause)
-            if isinstance(cause, Missing):
-                findings.missing.append(cause)
-            else:
-                findings.blocked.append(cause)
+        key = str(spec)
+        blocked_by = missing_under(spec, None)
+        if not blocked_by:
+            continue
+        if has_records[key]:
+            findings.blocked.append(spec)
+        else:
+            requested.append(key)
+        order.extend(k for k in sorted(blocked_by) if k not in order)
+    findings.missing = [
+        Missing(specs_by_key[k], k in requested, tuple(parents.get(k, ())))
+        for k in sorted(order, key=lambda k: k not in requested)
+    ]
     return findings

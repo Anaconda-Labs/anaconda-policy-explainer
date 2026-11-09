@@ -16,7 +16,7 @@ from .channels import PolicyChannel
 
 # Newest matching versions to look up per package.
 MAX_VERSIONS = 3
-BLOCKED_WHY = "available builds depend on removed packages"
+BLOCKED_WHY = "requested; available builds depend on removed packages"
 INDENT = " " * 6  # aligns under conda's "  - (hint_code) " hint prefix
 
 _CVE_REASON = re.compile(r"CVE score of ([\d.]+) is greater than ([\d.]+)")
@@ -55,21 +55,25 @@ class Entry:
 
 
 def group(findings: Findings) -> list[Blocked]:
-    """One entry per package name; requested packages first."""
+    """One entry per package name: requested, then needed, then blocked.
+
+    Blocked specs pinned to an exact version are left out: that version
+    survived the policy, its dependencies are reported on their own.
+    """
     specs: dict[str, list[MatchSpec]] = {}
     requested: set[str] = set()
     needed_by: dict[str, list[str]] = {}
     for missing in findings.missing:
         name = missing.spec.name
-        specs.setdefault(name, [])
-        if missing.spec not in specs[name]:
+        if missing.spec not in specs.setdefault(name, []):
             specs[name].append(missing.spec)
-        if missing.needed_by is None:
+        if missing.requested:
             requested.add(name)
-        elif missing.needed_by not in needed_by.setdefault(name, []):
-            needed_by[name].append(missing.needed_by)
-    for blocked in findings.blocked:
-        specs.setdefault(blocked.spec.name, [blocked.spec])
+        parents = needed_by.setdefault(name, [])
+        parents.extend(p for p in missing.needed_by if p not in parents)
+    for spec in findings.blocked:
+        if spec.get_exact_value("version") is None:
+            specs.setdefault(spec.name, [spec])
 
     def why(name: str) -> str:
         if name in requested:
@@ -80,7 +84,10 @@ def group(findings: Findings) -> list[Blocked]:
         others = len(parents) - 1
         return f"needed by {parents[0]}" + (f" and {others} others" if others else "")
 
-    names = sorted(specs, key=lambda n: n not in requested)
+    def rank(name: str) -> int:
+        return 0 if name in requested else 1 if needed_by.get(name) else 2
+
+    names = sorted(specs, key=rank)
     return [Blocked(name, tuple(specs[name]), why(name)) for name in names]
 
 
@@ -166,7 +173,7 @@ def render(
     channel: PolicyChannel,
     policy: ChannelPolicy,
     entries: Iterable[Entry],
-    note: str | None = None,
+    notes: Iterable[str] = (),
 ) -> str | None:
     """Report section for one channel policy, or None if it explains nothing."""
     lines = []
@@ -184,6 +191,5 @@ def render(
     header = f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"'
     if policy.summary:
         header += f": {policy.summary}"
-    if note:
-        lines.append(f"{INDENT}note: {note}")
+    lines.extend(f"{INDENT}note: {note}" for note in notes)
     return "\n".join([header, *lines])
