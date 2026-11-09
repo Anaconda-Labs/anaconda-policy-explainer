@@ -1,0 +1,6 @@
+{
+ "channel_name": "acme/analysts",
+ "policy_id": "00000000-0000-0000-0000-000000000001",
+ "policy_name": "secure",
+ "state": "scheduled"
+}

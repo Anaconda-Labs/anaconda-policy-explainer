@@ -1,0 +1,781 @@
+{
+ "items": [
+  {
+   "ckey": "win-64/urllib3-2.6.0-py312haa95532_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py310haa95532_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py311haa95532_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.2 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py314haa95532_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py313haa95532_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py310hca03da5_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py311hca03da5_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py313hca03da5_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py314hca03da5_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py312hca03da5_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py312hd43f75c_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py311hd43f75c_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.2 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py310hd43f75c_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.2 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py314hd43f75c_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py313hd43f75c_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py312h06a4308_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py310h06a4308_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py311h06a4308_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py313h06a4308_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.2 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py314h06a4308_0.tar.bz2",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py311haa95532_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py312haa95532_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py310haa95532_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 9.8 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py313haa95532_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.0-py314haa95532_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314haa95532_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "win-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py312hca03da5_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py310hca03da5_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py313hca03da5_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py314hca03da5_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.0-py311hca03da5_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311hca03da5_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "osx-arm64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py312hd43f75c_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py311hd43f75c_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 9.8 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py310hd43f75c_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py314hd43f75c_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.0-py313hd43f75c_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313hd43f75c_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-aarch64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py314h06a4308_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py314h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.14,<3.15.0a0",
+      "python_abi 3.14.* *_cp314"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py311h06a4308_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py311h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.11,<3.12.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py310h06a4308_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py310h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.10,<3.11.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py313h06a4308_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py313h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.13,<3.14.0a0",
+      "python_abi 3.13.* *_cp313"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.0-py312h06a4308_0.conda",
+   "metadata": {
+    "repodata_record.json": {
+     "build": "py312h06a4308_0",
+     "build_number": 0,
+     "depends": [
+      "brotlicffi >=1.2.0",
+      "pysocks >=1.5.6,<2.0,!=1.5.7",
+      "python >=3.12,<3.13.0a0"
+     ],
+     "name": "urllib3",
+     "subdir": "linux-64",
+     "version": "2.6.0"
+    }
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  }
+ ],
+ "total_count": 40
+}
