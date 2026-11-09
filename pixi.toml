@@ -25,4 +25,5 @@ default = { features = ["dev"], solve-group = "default" }
 test = "pytest tests -m 'not live'"
 test-live = "pytest tests -m live"
 lint = "ruff check src tests"
+format = "ruff format src tests"
 typecheck = "mypy"
