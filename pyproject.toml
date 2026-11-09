@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs>=0.3"]
+build-backend = "hatchling.build"
+
+[project]
+name = "anaconda-policy-explainer"
+description = "A conda plugin that explains solve failures caused by Anaconda channel policies"
+dynamic = ["version"]
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+requires-python = ">=3.10"
+dependencies = [
+    "conda>=26.7",
+    "anaconda-auth>=0.15",
+]
+
+[project.urls]
+repository = "https://github.com/Anaconda-Labs/anaconda-policy-explainer"
+
+[project.entry-points.conda]
+anaconda-policy-explainer = "anaconda_policy_explainer.plugin"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "ruff",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/anaconda_policy_explainer/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/anaconda_policy_explainer"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "UP"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["anaconda_policy_explainer"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = ["--color=yes", "-vv"]
+markers = [
+    "live: requires an Anaconda API key and a channel with an assigned policy",
+]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src/**/*.py"]
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["conda.*", "anaconda_auth.*"]
+ignore_missing_imports = true

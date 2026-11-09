@@ -1,0 +1,28 @@
+[workspace]
+name = "anaconda-policy-explainer"
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
+
+[dependencies]
+python = ">=3.10"
+conda = ">=26.7"
+anaconda-auth = ">=0.15"
+conda-libmamba-solver = "*"
+conda-rattler-solver = "*"
+
+[pypi-dependencies]
+anaconda-policy-explainer = { path = ".", editable = true }
+
+[feature.dev.dependencies]
+pytest = "*"
+mypy = "*"
+ruff = "*"
+
+[environments]
+default = { features = ["dev"], solve-group = "default" }
+
+[tasks]
+test = "pytest tests -m 'not live'"
+test-live = "pytest tests -m live"
+lint = "ruff check src tests"
+typecheck = "mypy"

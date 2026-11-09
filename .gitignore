@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+
+# Pixi
+.pixi/
+
+# Conda packages built by pixi build
+*.conda
+
+# OS
+.DS_Store
+
+# Editors / tools
+.omo/
+.kilo/
+.vscode/
+.idea/
+
+src/anaconda_policy_explainer/_version.py
+
+.env
