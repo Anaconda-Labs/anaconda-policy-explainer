@@ -1,9 +1,12 @@
 """Find which specs a filtered channel can no longer satisfy.
 
 A spec is *blocked* when no available record matches it, or when every
-record that matches it is itself blocked by one of its dependencies.
+record of its newest versions is itself blocked by one of its dependencies.
 "Available" means what conda could see during the solve: the filtered
 channel repodata plus records installed in the target prefix.
+
+Following only the newest versions keeps the walk (and the report) to what
+a solver would try first instead of every historical build.
 """
 
 from __future__ import annotations
@@ -15,8 +18,11 @@ from dataclasses import field
 
 from conda.models.match_spec import MatchSpec
 from conda.models.records import PackageRecord
+from conda.models.version import VersionOrder
 
 Query = Callable[[MatchSpec], Iterable[PackageRecord]]
+
+NEWEST_VERSIONS = 3
 
 
 @dataclass(frozen=True)
@@ -45,6 +51,24 @@ class Findings:
     blocked: list[AllBlocked] = field(default_factory=list)
 
 
+def _newest(
+    records: Iterable[PackageRecord], versions: int = NEWEST_VERSIONS
+) -> list[PackageRecord]:
+    """Records of the newest ``versions`` versions, newest first."""
+    ordered = sorted(
+        records, key=lambda r: (VersionOrder(r.version), r.build_number), reverse=True
+    )
+    kept: list[PackageRecord] = []
+    seen: list[str] = []
+    for record in ordered:
+        if record.version not in seen:
+            if len(seen) == versions:
+                break
+            seen.append(record.version)
+        kept.append(record)
+    return kept
+
+
 def _dist(record: PackageRecord) -> str:
     return f"{record.name}-{record.version}-{record.build}"
 
@@ -62,7 +86,7 @@ def find_blocked(specs: Iterable[MatchSpec], query: Query) -> Findings:
         if key in in_progress:  # dependency cycle: let the outer frame decide
             return ()
         in_progress.add(key)
-        records = list(query(spec))
+        records = _newest(query(spec))
         result: tuple[Cause, ...] = ()
         if not records:
             result = (Missing(spec, needed_by),)

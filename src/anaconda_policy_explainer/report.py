@@ -11,10 +11,12 @@ from conda.models.match_spec import MatchSpec
 
 from .api import ChannelPolicy
 from .api import FileStatus
+from .candidates import Findings
 from .channels import PolicyChannel
 
-# Newest matching versions to look up per spec.
+# Newest matching versions to look up per package.
 MAX_VERSIONS = 3
+BLOCKED_WHY = "available builds depend on removed packages"
 INDENT = " " * 6  # aligns under conda's "  - (hint_code) " hint prefix
 
 _CVE_REASON = re.compile(r"CVE score of ([\d.]+) is greater than ([\d.]+)")
@@ -28,12 +30,72 @@ class VersionResult:
 
 
 @dataclass(frozen=True)
-class Entry:
-    """A blocked spec, why it was needed, and what the policy did to it."""
+class Blocked:
+    """A blocked package: the specs it was needed as, and why it was needed."""
 
-    spec: MatchSpec
+    name: str
+    specs: tuple[MatchSpec, ...]
+    why: str
+
+    @property
+    def label(self) -> str:
+        if len(self.specs) == 1:
+            spec = self.specs[0]
+            return getattr(spec, "original_spec_str", None) or str(spec)
+        return self.name
+
+
+@dataclass(frozen=True)
+class Entry:
+    """A blocked package and what the policy did to its newest versions."""
+
+    label: str
     why: str
     results: tuple[VersionResult, ...]
+
+
+def group(findings: Findings) -> list[Blocked]:
+    """One entry per package name; requested packages first."""
+    specs: dict[str, list[MatchSpec]] = {}
+    requested: set[str] = set()
+    needed_by: dict[str, list[str]] = {}
+    for missing in findings.missing:
+        name = missing.spec.name
+        specs.setdefault(name, [])
+        if missing.spec not in specs[name]:
+            specs[name].append(missing.spec)
+        if missing.needed_by is None:
+            requested.add(name)
+        elif missing.needed_by not in needed_by.setdefault(name, []):
+            needed_by[name].append(missing.needed_by)
+    for blocked in findings.blocked:
+        specs.setdefault(blocked.spec.name, [blocked.spec])
+
+    def why(name: str) -> str:
+        if name in requested:
+            return "requested"
+        parents = needed_by.get(name, [])
+        if not parents:
+            return BLOCKED_WHY
+        others = len(parents) - 1
+        return f"needed by {parents[0]}" + (f" and {others} others" if others else "")
+
+    names = sorted(specs, key=lambda n: n not in requested)
+    return [Blocked(name, tuple(specs[name]), why(name)) for name in names]
+
+
+def pick_versions(
+    specs: Sequence[MatchSpec], versions: Iterable[str], limit: int = MAX_VERSIONS
+) -> list[tuple[str, MatchSpec]]:
+    """Newest ``limit`` versions accepted by any of ``specs``, with that spec."""
+    picked = []
+    for version in versions:
+        spec = next((s for s in specs if matching_versions(s, [version])), None)
+        if spec is not None:
+            picked.append((version, spec))
+            if len(picked) == limit:
+                break
+    return picked
 
 
 def matching_versions(
@@ -112,8 +174,7 @@ def render(
         removed = [r for r in entry.results if r.removed]
         if not removed:
             continue
-        spec = getattr(entry.spec, "original_spec_str", None) or str(entry.spec)
-        lines.append(f"{INDENT}{spec} ({entry.why})")
+        lines.append(f"{INDENT}{entry.label} ({entry.why})")
         for result in removed:
             lines.append(
                 f"{INDENT}  {result.version} removed: {shorten(result.reasons)}"

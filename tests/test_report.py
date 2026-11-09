@@ -8,10 +8,17 @@ from conda.models.match_spec import MatchSpec
 from anaconda_policy_explainer.api import ChannelPolicy
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.api import parse_versions
+from anaconda_policy_explainer.candidates import AllBlocked
+from anaconda_policy_explainer.candidates import Findings
+from anaconda_policy_explainer.candidates import Missing
 from anaconda_policy_explainer.channels import PolicyChannel
+from anaconda_policy_explainer.report import BLOCKED_WHY
+from anaconda_policy_explainer.report import Blocked
 from anaconda_policy_explainer.report import Entry
 from anaconda_policy_explainer.report import VersionResult
+from anaconda_policy_explainer.report import group
 from anaconda_policy_explainer.report import matching_versions
+from anaconda_policy_explainer.report import pick_versions
 from anaconda_policy_explainer.report import render
 from anaconda_policy_explainer.report import shorten
 from anaconda_policy_explainer.report import version_result
@@ -89,15 +96,55 @@ def test_shorten_keeps_non_cve_reasons():
     ) == ("CVE 7.5 > 7; License GPL is excluded")
 
 
+def test_group_by_package_requested_first():
+    findings = Findings(
+        missing=[
+            Missing(MatchSpec("python >=3.15,<3.16.0a0"), "urllib3-2.6.3-py315h0_1"),
+            Missing(MatchSpec("python >=3.13,<3.14.0a0"), "pycparser-3.12-py313h0_0"),
+            Missing(MatchSpec("python >=3.15,<3.16.0a0"), "cffi-2.0-py315h0_0"),
+            Missing(MatchSpec("jinja2"), None),
+        ],
+        blocked=[AllBlocked(MatchSpec("urllib3")), AllBlocked(MatchSpec("python"))],
+    )
+    assert group(findings) == [
+        Blocked("jinja2", (MatchSpec("jinja2"),), "requested"),
+        Blocked(
+            "python",
+            (
+                MatchSpec("python >=3.15,<3.16.0a0"),
+                MatchSpec("python >=3.13,<3.14.0a0"),
+            ),
+            "needed by urllib3-2.6.3-py315h0_1 and 2 others",
+        ),
+        Blocked("urllib3", (MatchSpec("urllib3"),), BLOCKED_WHY),
+    ]
+
+
+def test_group_label():
+    assert Blocked("python", (MatchSpec("python >=3.15"),), "").label == "python >=3.15"
+    two = (MatchSpec("python >=3.15"), MatchSpec("python <3"))
+    assert Blocked("python", two, "").label == "python"
+
+
+def test_pick_versions_across_specs():
+    specs = (MatchSpec("urllib3 >=2.6.3,<2.7"), MatchSpec("urllib3 <2.3"))
+    picked = pick_versions(specs, urllib3_versions())
+    assert [(v, str(s)) for v, s in picked] == [
+        ("2.6.3", str(specs[0])),
+        ("2.2.3", str(specs[1])),
+        ("2.2.2", str(specs[1])),
+    ]
+
+
 def test_render_section():
     entries = [
         Entry(
-            MatchSpec("urllib3=2.6.0"),
+            "urllib3=2.6.0",
             "requested",
             (VersionResult("2.6.0", True, ("CVE score of 8.9 is greater than 7",)),),
         ),
         Entry(
-            MatchSpec("python >=3.15,<3.16.0a0"),
+            "python >=3.15,<3.16.0a0",
             "needed by urllib3-2.6.3-py315h06a4308_1",
             (
                 VersionResult("3.15.2", True, ("CVE score of 7.5 is greater than 7",)),
@@ -117,16 +164,12 @@ def test_render_section():
 
 
 def test_render_note():
-    entries = [
-        Entry(MatchSpec("jinja2"), "requested", (VersionResult("3.1.6", True, ()),))
-    ]
+    entries = [Entry("jinja2", "requested", (VersionResult("3.1.6", True, ()),))]
     text = render(CHANNEL, POLICY, entries, note="channel authenticates against x")
     assert text is not None
     assert text.endswith("\n      note: channel authenticates against x")
 
 
 def test_render_nothing_removed():
-    entries = [
-        Entry(MatchSpec("jinja2"), "requested", (VersionResult("3.1.6", False, ()),))
-    ]
+    entries = [Entry("jinja2", "requested", (VersionResult("3.1.6", False, ()),))]
     assert render(CHANNEL, POLICY, entries) is None

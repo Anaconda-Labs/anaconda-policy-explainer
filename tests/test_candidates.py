@@ -94,6 +94,12 @@ def test_one_usable_build_keeps_spec_satisfiable():
     assert findings.missing == []
 
 
+def test_only_newest_versions_are_followed():
+    # oldlib 1.0 is usable, but a solver would try 4.0, 3.0 and 2.0 first
+    assert blocked("oldlib").blocked == [AllBlocked(MatchSpec("oldlib"))]
+    assert blocked("oldlib <2").blocked == []
+
+
 @pytest.mark.parametrize("spec", ["python=3.13", "jinja2"])
 def test_causes_are_reported_once(spec):
     findings = blocked(spec, spec)
