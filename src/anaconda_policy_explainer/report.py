@@ -176,20 +176,24 @@ def render(
     notes: Iterable[str] = (),
 ) -> str | None:
     """Report section for one channel policy, or None if it explains nothing."""
-    lines = []
+    blocked = []
     for entry in entries:
         removed = [r for r in entry.results if r.removed]
         if not removed:
             continue
-        lines.append(f"{INDENT}{entry.label} ({entry.why})")
+        blocked.append(f"{INDENT}  {entry.label} ({entry.why})")
         for result in removed:
-            lines.append(
-                f"{INDENT}  {result.version} removed: {shorten(result.reasons)}"
+            blocked.append(
+                f"{INDENT}    {result.version} removed: {shorten(result.reasons)}"
             )
-    if not lines:
+    if not blocked:
         return None
-    header = f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"'
-    if policy.summary:
-        header += f": {policy.summary}"
-    lines.extend(f"{INDENT}note: {note}" for note in notes)
-    return "\n".join([header, *lines])
+    return "\n".join(
+        [
+            f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"',
+            *(f"{INDENT}{line}" for line in policy.lines),
+            f"{INDENT}blocked:",
+            *blocked,
+            *(f"{INDENT}note: {note}" for note in notes),
+        ]
+    )

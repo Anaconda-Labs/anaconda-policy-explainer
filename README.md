@@ -13,9 +13,12 @@ PackagesNotFoundInChannelsError: The following packages are not available from c
   - urllib3=2.6.0
 
 Next steps:
-  - (anaconda_channel_policy) acme/analysts is filtered by policy "secure": removes cve_score > 7
-      urllib3=2.6.0 (requested)
-        2.6.0 removed: CVE 8.9 > 7
+  - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
+      removes packages where:
+        cve_score > 7
+      blocked:
+        urllib3=2.6.0 (requested)
+          2.6.0 removed: CVE 8.9 > 7
 ```
 
 When the cause is a dependency, the report names it and what needed it:
@@ -25,11 +28,28 @@ LibMambaUnsatisfiableError: Encountered problems while solving:
   - nothing provides jinja2 needed by altair-6.3.0-py313h06a4308_0
 ...
 Next steps:
-  - (anaconda_channel_policy) acme/analysts is filtered by policy "secure": removes cve_score > 7
-      jinja2 (needed by altair-6.3.0-py313h06a4308_0)
-        3.1.6 removed: CVE 8.6 > 7
-        3.1.5 removed: CVE 8.6 > 7
-        3.1.4 removed: CVE 8.6 > 7
+  - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
+      removes packages where:
+        cve_score > 7
+      blocked:
+        jinja2 (needed by altair-6.3.0-py313h06a4308_0 and 17 others)
+          3.1.6 removed: CVE 8.6 > 7
+          3.1.5 removed: CVE 8.6 > 7
+          3.1.4 removed: CVE 8.6 > 7
+```
+
+The policy is shown as it is stored, one rule per line, with nested groups indented:
+
+```
+      removes packages where any of:
+        all of:
+          cve_score > 7
+          cve_status == active
+        all of:
+          cve_score > 4
+          cve_status == reported
+      keeps packages where:
+        conda_spec == numpy >=1.8
 ```
 
 ## Install

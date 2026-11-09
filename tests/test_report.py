@@ -27,7 +27,7 @@ SUBDIRS = ("linux-64", "noarch")
 CHANNEL = PolicyChannel(
     "https://repo.anaconda.cloud/repo/acme/analysts", "acme", "analysts", "anaconda.com"
 )
-POLICY = ChannelPolicy("secure", "removes cve_score > 7")
+POLICY = ChannelPolicy("secure", ("removes packages where:", "  cve_score > 7"))
 
 
 def files(name: str, version: str):
@@ -156,11 +156,14 @@ def test_render_section():
     ]
     assert render(CHANNEL, POLICY, entries) == "\n".join(
         [
-            'acme/analysts is filtered by policy "secure": removes cve_score > 7',
-            "      urllib3=2.6.0 (requested)",
-            "        2.6.0 removed: CVE 8.9 > 7",
-            "      python >=3.15,<3.16.0a0 (needed by urllib3-2.6.3-py315h06a4308_1)",
-            "        3.15.2 removed: CVE 7.5 > 7",
+            'acme/analysts is filtered by policy "secure"',
+            "      removes packages where:",
+            "        cve_score > 7",
+            "      blocked:",
+            "        urllib3=2.6.0 (requested)",
+            "          2.6.0 removed: CVE 8.9 > 7",
+            "        python >=3.15,<3.16.0a0 (needed by urllib3-2.6.3-py315h06a4308_1)",
+            "          3.15.2 removed: CVE 7.5 > 7",
         ]
     )
 

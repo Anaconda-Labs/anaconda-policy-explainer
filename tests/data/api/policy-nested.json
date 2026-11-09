@@ -1,0 +1,71 @@
+{
+ "filter": {
+  "operator": "or",
+  "subfilters": [
+   {
+    "operator": "or",
+    "subfilters": [
+     {
+      "operator": "and",
+      "subfilters": [
+       {
+        "comparator": ">",
+        "criterion": 7,
+        "facet": "cve_score",
+        "type": "simple"
+       },
+       {
+        "comparator": "==",
+        "criterion": "active",
+        "facet": "cve_status",
+        "type": "simple"
+       }
+      ],
+      "type": "compound"
+     },
+     {
+      "operator": "and",
+      "subfilters": [
+       {
+        "comparator": ">",
+        "criterion": 4,
+        "facet": "cve_score",
+        "type": "simple"
+       },
+       {
+        "comparator": "==",
+        "criterion": "reported",
+        "facet": "cve_status",
+        "type": "simple"
+       }
+      ],
+      "type": "compound"
+     }
+    ],
+    "type": "compound"
+   },
+   {
+    "operator": "or",
+    "subfilters": [
+     {
+      "operator": "or",
+      "subfilters": [
+       {
+        "comparator": "==",
+        "criterion": "numpy >=1.8",
+        "facet": "conda_spec",
+        "type": "simple"
+       }
+      ],
+      "type": "compound"
+     }
+    ],
+    "type": "compound"
+   }
+  ],
+  "type": "compound"
+ },
+ "id": "00000000-0000-0000-0000-000000000004",
+ "name": "nested-example",
+ "schema_version": 1
+}

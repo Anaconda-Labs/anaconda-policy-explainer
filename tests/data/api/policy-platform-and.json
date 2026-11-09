@@ -1,0 +1,35 @@
+{
+ "filter": {
+  "operator": "or",
+  "subfilters": [
+   {
+    "operator": "or",
+    "subfilters": [
+     {
+      "operator": "and",
+      "subfilters": [
+       {
+        "comparator": "!=",
+        "criterion": "osx-arm64",
+        "facet": "platform",
+        "type": "simple"
+       },
+       {
+        "comparator": "!=",
+        "criterion": "noarch",
+        "facet": "platform",
+        "type": "simple"
+       }
+      ],
+      "type": "compound"
+     }
+    ],
+    "type": "compound"
+   }
+  ],
+  "type": "compound"
+ },
+ "id": "00000000-0000-0000-0000-000000000005",
+ "name": "platform-example",
+ "schema_version": 1
+}

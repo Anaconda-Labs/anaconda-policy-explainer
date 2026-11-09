@@ -6,7 +6,7 @@ from pathlib import Path
 
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.api import parse_versions
-from anaconda_policy_explainer.api import summarize_filter
+from anaconda_policy_explainer.api import policy_lines
 
 DATA = Path(__file__).parent / "data" / "api"
 
@@ -15,20 +15,88 @@ def load(name: str):
     return json.loads((DATA / f"{name}.json").read_text())
 
 
-def test_summarize_single_rule_policy():
-    policy = load("policy")
-    assert summarize_filter(policy["filter"], policy["schema_version"]) == (
-        "removes cve_score > 7"
-    )
+def lines_of(name: str) -> list[str]:
+    policy = load(name)
+    return policy_lines(policy["filter"], policy["schema_version"])
 
 
-def test_summarize_policy_with_overrides():
-    policy = load("policy-multi")
-    assert summarize_filter(policy["filter"], policy["schema_version"]) == (
-        "removes license_family == AGPL or license_family == Proprietary"
-        " or cve_score >= 9 or platform != linux-64 or platform != noarch"
-        "; keeps conda_spec == airflow>2.0"
-    )
+def test_single_rule_policy():
+    assert lines_of("policy") == [
+        "removes packages where:",
+        "  cve_score > 7",
+    ]
+
+
+def test_single_group_is_not_nested():
+    assert lines_of("policy-platform-and") == [
+        "removes packages where all of:",
+        "  platform != osx-arm64",
+        "  platform != noarch",
+    ]
+
+
+def test_nested_groups_with_keeps():
+    assert lines_of("policy-nested") == [
+        "removes packages where any of:",
+        "  all of:",
+        "    cve_score > 7",
+        "    cve_status == active",
+        "  all of:",
+        "    cve_score > 4",
+        "    cve_status == reported",
+        "keeps packages where:",
+        "  conda_spec == numpy >=1.8",
+    ]
+
+
+def test_rules_are_literal_and_not_merged():
+    assert lines_of("policy-multi") == [
+        "removes packages where any of:",
+        "  license_family == AGPL",
+        "  license_family == Proprietary",
+        "  cve_score >= 9",
+        "  platform != linux-64",
+        "  platform != noarch",
+        "keeps packages where:",
+        "  conda_spec == airflow>2.0",
+    ]
+
+
+def test_schema_v2_sections_in_evaluation_order():
+    rule = {
+        "type": "simple",
+        "facet": "package_age",
+        "comparator": ">",
+        "criterion": 30,
+    }
+    raw = {
+        "add_packages": {"type": "compound", "operator": "or", "subfilters": [rule]},
+        "remove_packages": {
+            "type": "compound",
+            "operator": "and",
+            "subfilters": [
+                {
+                    "type": "simple",
+                    "facet": "cve_score",
+                    "comparator": ">",
+                    "criterion": 7,
+                },
+                {
+                    "type": "simple",
+                    "facet": "platform",
+                    "comparator": "!=",
+                    "criterion": "noarch",
+                },
+            ],
+        },
+    }
+    assert policy_lines(raw, 2) == [
+        "adds packages where:",
+        "  package_age > 30 days",
+        "removes packages where all of:",
+        "  cve_score > 7",
+        "  platform != noarch",
+    ]
 
 
 def test_versions_newest_first():
