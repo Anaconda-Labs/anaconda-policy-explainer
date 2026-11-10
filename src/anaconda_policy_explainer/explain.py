@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
-from contextlib import ExitStack
 from dataclasses import dataclass
 
 from conda.base.context import context
@@ -96,14 +95,13 @@ def explain(solve: Solve) -> list[str]:
     policed = _policed(policy_channels(channels, context.channel_settings))
     if not policed:
         return []
-    with ExitStack() as stack:
-        local = {
-            url: stack.enter_context(local_channel(url, subdirs))
-            for url in dict.fromkeys(p.source_url for p in policed)
-        }
-        solution = unfiltered_solve(
-            prefix, channels, local.values(), subdirs, requested, solve.specs_to_remove
-        )
+    local = {
+        url: local_channel(url, subdirs)
+        for url in dict.fromkeys(p.source_url for p in policed)
+    }
+    solution = unfiltered_solve(
+        prefix, channels, local.values(), subdirs, requested, solve.specs_to_remove
+    )
     sections = []
     for p in policed:
         records = taken_from(solution, local[p.source_url])

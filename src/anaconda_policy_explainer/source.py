@@ -1,22 +1,23 @@
 """The unfiltered index a policy channel was built from, as a local channel.
 
 The index is fetched through conda's own repodata cache and linked into a
-temporary channel as ``<subdir>/repodata.json``.
+local channel as ``<subdir>/repodata.json``.
+The local channel's path is stable per source, because conda caches indexes
+by channel URL.
 """
 
 from __future__ import annotations
 
+import hashlib
 import os
 import shutil
 from collections.abc import Iterable
-from collections.abc import Iterator
-from contextlib import contextmanager
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from urllib.parse import urlparse
 
 from conda.core.subdir_data import SubdirData
 from conda.models.channel import Channel
+from platformdirs import user_cache_dir
 
 from .channels import REPO_HOST
 from .channels import PolicyChannel
@@ -42,21 +43,26 @@ def unfiltered_url(channel: PolicyChannel, source: str | None) -> str | None:
     return PUBLIC_SOURCES.get(source)
 
 
+CACHE = Path(user_cache_dir("anaconda-policy-explainer"))
+
+
 def _link(cached: Path, target: Path) -> None:
+    """Point ``target`` at ``cached``, replacing it atomically."""
+    staging = target.with_name(f"{target.name}.{os.getpid()}")
     try:
-        os.symlink(cached, target)
+        os.symlink(cached, staging)
     except OSError:
-        shutil.copyfile(cached, target)
+        shutil.copyfile(cached, staging)
+    os.replace(staging, target)
 
 
-@contextmanager
-def local_channel(url: str, subdirs: Iterable[str]) -> Iterator[str]:
+def local_channel(url: str, subdirs: Iterable[str]) -> str:
     """A file:// channel holding ``url``'s index for ``subdirs``."""
-    with TemporaryDirectory(prefix="anaconda-policy-explainer-") as tmp:
-        for subdir in subdirs:
-            fetch = SubdirData(Channel(f"{url}/{subdir}")).repo_fetch
-            cached, _ = fetch.fetch_latest_path()
-            target = Path(tmp, subdir)
-            target.mkdir()
-            _link(Path(cached), target / "repodata.json")
-        yield Path(tmp).as_uri()
+    root = CACHE / "channels" / hashlib.sha256(url.encode()).hexdigest()[:16]
+    for subdir in subdirs:
+        fetch = SubdirData(Channel(f"{url}/{subdir}")).repo_fetch
+        cached, _ = fetch.fetch_latest_path()
+        target = root / subdir
+        target.mkdir(parents=True, exist_ok=True)
+        _link(Path(cached), target / "repodata.json")
+    return root.as_uri()

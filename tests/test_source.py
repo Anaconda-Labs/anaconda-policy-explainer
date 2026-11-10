@@ -4,6 +4,7 @@ from urllib.request import urlopen
 
 import pytest
 
+from anaconda_policy_explainer import source
 from anaconda_policy_explainer.channels import PolicyChannel
 from anaconda_policy_explainer.source import local_channel
 from anaconda_policy_explainer.source import unfiltered_url
@@ -38,9 +39,19 @@ def test_no_public_source_outside_prod():
     assert unfiltered_url(STAGE, "main") is None
 
 
-def test_local_channel_has_every_subdir():
-    source = (Path(__file__).parent / "data" / "unfiltered-channel").as_uri()
-    with local_channel(source, ("linux-64", "noarch")) as url:
-        for subdir in ("linux-64", "noarch"):
-            with urlopen(f"{url}/{subdir}/repodata.json") as response:
-                assert json.load(response)["info"]["subdir"] == subdir
+UNFILTERED = (Path(__file__).parent / "data" / "unfiltered-channel").as_uri()
+
+
+def test_local_channel_has_every_subdir(tmp_path, monkeypatch):
+    monkeypatch.setattr(source, "CACHE", tmp_path)
+    url = local_channel(UNFILTERED, ("linux-64", "noarch"))
+    for subdir in ("linux-64", "noarch"):
+        with urlopen(f"{url}/{subdir}/repodata.json") as response:
+            assert json.load(response)["info"]["subdir"] == subdir
+
+
+def test_local_channel_path_is_stable(tmp_path, monkeypatch):
+    monkeypatch.setattr(source, "CACHE", tmp_path)
+    first = local_channel(UNFILTERED, ("linux-64", "noarch"))
+    assert local_channel(UNFILTERED, ("linux-64", "noarch")) == first
+    assert len(list((tmp_path / "channels").iterdir())) == 1

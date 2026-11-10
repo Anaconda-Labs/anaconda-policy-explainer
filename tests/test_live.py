@@ -51,7 +51,12 @@ def conda(tmp_path: Path):
         "    auth: anaconda-auth\n"
         f"default_channels:\n  - {CHANNEL}\n"
     )
-    env = {**os.environ, "HOME": str(home), "CONDARC": str(condarc)}
+    env = {
+        **os.environ,
+        "HOME": str(home),
+        "CONDARC": str(condarc),
+        "CONDA_PKGS_DIRS": str(tmp_path / "pkgs"),
+    }
 
     def run(*args: str, **extra: str) -> str:
         result = subprocess.run(

@@ -5,6 +5,7 @@ is its source and also has jinja2 and python 3.13.11, which the "policy"
 removed.
 """
 
+from argparse import Namespace
 from pathlib import Path
 
 import pytest
@@ -12,9 +13,9 @@ from conda.base.context import reset_context
 from conda.exceptions import CondaError
 from conda.models.match_spec import MatchSpec
 
+from anaconda_policy_explainer import source
 from anaconda_policy_explainer.resolve import taken_from
 from anaconda_policy_explainer.resolve import unfiltered_solve
-from anaconda_policy_explainer.source import local_channel
 
 DATA = Path(__file__).parent / "data"
 FILTERED = (DATA / "filtered-channel").as_uri()
@@ -31,18 +32,23 @@ def solver(request, monkeypatch):
     reset_context()
 
 
+@pytest.fixture(autouse=True)
+def cache(tmp_path, monkeypatch):
+    monkeypatch.setattr(source, "CACHE", tmp_path / "cache")
+
+
 def taken(tmp_path: Path, *specs: str, channels=(FILTERED,)) -> list[str]:
-    with local_channel(UNFILTERED, SUBDIRS) as unfiltered:
-        solution = unfiltered_solve(
-            str(tmp_path / "env"),
-            channels,
-            [unfiltered],
-            SUBDIRS,
-            [MatchSpec(s) for s in specs],
-        )
-        return sorted(
-            r.dist_str().split("::")[-1] for r in taken_from(solution, unfiltered)
-        )
+    unfiltered = source.local_channel(UNFILTERED, SUBDIRS)
+    solution = unfiltered_solve(
+        str(tmp_path / "env"),
+        channels,
+        [unfiltered],
+        SUBDIRS,
+        [MatchSpec(s) for s in specs],
+    )
+    return sorted(
+        r.dist_str().split("::")[-1] for r in taken_from(solution, unfiltered)
+    )
 
 
 def test_removed_dependency(solver, tmp_path):
@@ -60,6 +66,16 @@ def test_strict_priority_is_overridden(solver, tmp_path, monkeypatch):
     monkeypatch.setenv("CONDA_CHANNEL_PRIORITY", "strict")
     reset_context()
     assert taken(tmp_path, "python=3.13.11") == ["python-3.13.11-h0_100_cp313"]
+
+
+def test_strict_priority_flag_is_overridden(solver, tmp_path):
+    reset_context(argparse_args=Namespace(channel_priority="strict"))
+    assert taken(tmp_path, "python=3.13.11") == ["python-3.13.11-h0_100_cp313"]
+
+
+def test_resolve_prints_nothing(solver, tmp_path, capfd):
+    taken(tmp_path, "altair")
+    assert capfd.readouterr() == ("", "")
 
 
 def test_filtered_channel_through_defaults(solver, tmp_path, monkeypatch):
