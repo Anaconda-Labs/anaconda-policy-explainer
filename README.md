@@ -60,10 +60,6 @@ The policy is shown as it is stored, one rule per line, with nested groups inden
 
 ## Install
 
-```
-pip install anaconda-policy-explainer
-```
-
 The plugin needs conda 26.7 or newer (for the `conda_error_hints` hook) and works with the classic, libmamba and rattler solvers. It reads channel policies with your [anaconda-auth](https://github.com/anaconda/anaconda-auth) credentials: `anaconda auth login`, or an API key in `ANACONDA_AUTH_API_KEY`.
 
 The plugin compares your channel with the public channel it is built from, such as `https://repo.anaconda.com/pkgs/main`. Use of that channel is subject to [Anaconda's Terms of Service](https://www.anaconda.com/legal/terms/terms-of-service), which must be accepted.
