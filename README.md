@@ -103,7 +103,7 @@ ANACONDA_AUTH_API_KEY=$(anaconda auth api-key) \
 pixi run test-live
 ```
 
-`tests/data/environments` holds environment files pinned against one policy channel, used by the live tests to check exact results.
+`tests/data/environments` holds environment files that use `defaults`; the live tests point `default_channels` at the channel under test.
 
 ## License
 
