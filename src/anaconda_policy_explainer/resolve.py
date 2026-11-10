@@ -35,7 +35,7 @@ def _quiet_flexible_priority() -> Iterator[None]:
 
 def unfiltered_solve(
     prefix: str,
-    channels: Iterable[str],
+    channels: Iterable[str | Channel],
     unfiltered: Iterable[str],
     subdirs: Iterable[str],
     specs_to_add: Iterable[MatchSpec],
@@ -47,7 +47,9 @@ def unfiltered_solve(
     ``unfiltered`` channel are what the filtered channels are missing.
     """
     solver_class = context.plugin_manager.get_solver_backend()
-    all_channels = [Channel(c) for c in (*channels, *unfiltered)]
+    all_channels = [
+        c if isinstance(c, Channel) else Channel(c) for c in (*channels, *unfiltered)
+    ]
     with _quiet_flexible_priority():
         solver = solver_class(
             prefix,

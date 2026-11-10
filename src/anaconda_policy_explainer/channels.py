@@ -59,11 +59,11 @@ def auth_domain(url: str, channel_settings: Iterable[Mapping[str, str]]) -> str:
     return domain
 
 
-def base_urls(channel_names: Iterable[str]) -> list[str]:
+def base_urls(channel_names: Iterable[str | Channel]) -> list[str]:
     """Expand channel names (including multichannels like ``defaults``) to base URLs."""
     urls: list[str] = []
     for name in channel_names:
-        channel = Channel(name)
+        channel = name if isinstance(name, Channel) else Channel(name)
         for url in getattr(channel, "base_urls", None) or (channel.base_url,):
             if url and url not in urls:
                 urls.append(url)
@@ -71,7 +71,8 @@ def base_urls(channel_names: Iterable[str]) -> list[str]:
 
 
 def policy_channels(
-    channel_names: Iterable[str], channel_settings: Iterable[Mapping[str, str]]
+    channel_names: Iterable[str | Channel],
+    channel_settings: Iterable[Mapping[str, str]],
 ) -> list[PolicyChannel]:
     """Organization channels among ``channel_names``, in channel priority order."""
     settings = list(channel_settings)

@@ -17,6 +17,7 @@ from .api import PolicyApi
 from .api import default_site_domain
 from .channels import PolicyChannel
 from .channels import policy_channels
+from .plugin import Solve
 from .report import Entry
 from .report import dist
 from .report import file_status
@@ -86,27 +87,22 @@ def _entries(
     return entries, len(pending)
 
 
-def explain(
-    requested: Iterable[MatchSpec], specs_to_remove: Iterable[MatchSpec] = ()
-) -> list[str]:
+def explain(solve: Solve) -> list[str]:
     """Report sections, one per channel policy that explains the failure."""
-    requested = list(requested)
-    policed = _policed(policy_channels(context.channels, context.channel_settings))
+    channels = solve.channels or tuple(context.channels)
+    prefix = solve.prefix or str(context.target_prefix)
+    subdirs = solve.subdirs or tuple(context.subdirs)
+    requested = solve.specs_to_add
+    policed = _policed(policy_channels(channels, context.channel_settings))
     if not policed:
         return []
-    subdirs = context.subdirs
     with ExitStack() as stack:
         local = {
             url: stack.enter_context(local_channel(url, subdirs))
             for url in dict.fromkeys(p.source_url for p in policed)
         }
         solution = unfiltered_solve(
-            str(context.target_prefix),
-            context.channels,
-            local.values(),
-            subdirs,
-            requested,
-            specs_to_remove,
+            prefix, channels, local.values(), subdirs, requested, solve.specs_to_remove
         )
     sections = []
     for p in policed:
