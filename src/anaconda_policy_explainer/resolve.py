@@ -13,6 +13,8 @@ from conda.models.channel import Channel
 from conda.models.match_spec import MatchSpec
 from conda.models.records import PackageRecord
 
+from .channels import base_urls
+
 OVERRIDES = {"CONDA_CHANNEL_PRIORITY": "flexible", "CONDA_QUIET": "true"}
 
 
@@ -47,9 +49,10 @@ def unfiltered_solve(
     ``unfiltered`` channel are what the filtered channels are missing.
     """
     solver_class = context.plugin_manager.get_solver_backend()
-    all_channels = [
-        c if isinstance(c, Channel) else Channel(c) for c in (*channels, *unfiltered)
-    ]
+    # Expand multichannels such as "defaults" into their URLs. Re-solving with
+    # the captured "defaults" object, rattler did not use the unfiltered
+    # channel for a live organization channel (not reproduced offline).
+    all_channels = [Channel(url) for url in (*base_urls(channels), *unfiltered)]
     with _quiet_flexible_priority():
         solver = solver_class(
             prefix,

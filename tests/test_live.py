@@ -7,8 +7,10 @@ Opt-in: these need a channel with a policy and an API key for it.
     ANACONDA_AUTH_API_KEY  an API key for the channel's organization
 
 conda runs with an empty HOME so that no user configuration (such as an
-unfiltered default channel) can satisfy what the policy removed. Results
-depend on the platform's current policy data.
+unfiltered default channel) can satisfy what the policy removed, and with
+APE_LIVE_CHANNEL as its only default channel, which the environment files in
+tests/data/environments use. Results depend on the platform's current
+policy data.
 """
 
 from __future__ import annotations
@@ -26,8 +28,6 @@ from anaconda_policy_explainer.plugin import HINT_CODE
 CHANNEL = os.environ.get("APE_LIVE_CHANNEL", "")
 REMOVED_SPEC = os.environ.get("APE_LIVE_REMOVED_SPEC", "")
 ENVIRONMENTS = Path(__file__).parent / "data" / "environments"
-# tests/data/environments are pinned against this channel and its secure policy
-ENVIRONMENTS_CHANNEL = "https://repo.anaconda.cloud/repo/acme/analysts"
 
 pytestmark = [
     pytest.mark.live,
@@ -39,22 +39,6 @@ pytestmark = [
 
 SOLVERS = ["libmamba", "rattler"]
 
-PINNED_REMOVED = [
-    "bzip2-1.0.8-h5eee18b_6",
-    "jinja2-3.1.6-py313h06a4308_0",
-    "ld_impl_linux-64-2.44-h9e0c5a2_3",
-    "ncurses-6.6-hfaaeb4e_0",
-    "openssl-3.5.9-h1b28b03_0",
-    "pip-26.2.2-pyhc872135_0",
-    "python-3.13.11-hcf712cf_100_cp313",
-    "sqlite-3.53.4-h795bf6d_0",
-    "tk-8.6.15-h54e0aa7_0",
-    "urllib3-2.6.1-py313h06a4308_0",
-    "wheel-0.48.0-py313h06a4308_0",
-    "xz-5.8.4-h140a991_0",
-    "zlib-1.3.2-h47b2149_0",
-]
-
 
 @pytest.fixture
 def conda(tmp_path: Path):
@@ -65,6 +49,7 @@ def conda(tmp_path: Path):
         "channel_settings:\n"
         "  - channel: https://repo.anaconda.cloud/*\n"
         "    auth: anaconda-auth\n"
+        f"default_channels:\n  - {CHANNEL}\n"
     )
     env = {**os.environ, "HOME": str(home), "CONDARC": str(condarc)}
 
@@ -118,11 +103,13 @@ def test_no_hint_for_unknown_package(conda, solver: str, tmp_path: Path):
     assert HINT_CODE not in output
 
 
-@pytest.mark.skipif(
-    CHANNEL != ENVIRONMENTS_CHANNEL, reason="environments target acme/analysts"
-)
 @pytest.mark.parametrize("solver", SOLVERS)
-def test_pinned_environment_lists_every_removed_pin(conda, solver: str, tmp_path: Path):
+def test_pinned_environment_blocks_only_its_pins(conda, solver: str, tmp_path: Path):
+    pins = (ENVIRONMENTS / "pinned.yml").read_text().split("dependencies:\n")[1]
+    pinned = {
+        "-".join(line.strip().removeprefix("- ").split("="))
+        for line in pins.splitlines()
+    }
     output = conda(
         "env",
         "create",
@@ -136,4 +123,7 @@ def test_pinned_environment_lists_every_removed_pin(conda, solver: str, tmp_path
         CONDA_SUBDIR="linux-64",
         CONDA_OVERRIDE_GLIBC="2.28",
     )
-    assert sorted(blocked(output)) == PINNED_REMOVED
+    removed = blocked(output)
+    assert removed
+    assert set(removed) <= pinned
+    assert all(f"{dist} (requested)" in output for dist in removed)

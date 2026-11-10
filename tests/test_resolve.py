@@ -31,11 +31,11 @@ def solver(request, monkeypatch):
     reset_context()
 
 
-def taken(tmp_path: Path, *specs: str) -> list[str]:
+def taken(tmp_path: Path, *specs: str, channels=(FILTERED,)) -> list[str]:
     with local_channel(UNFILTERED, SUBDIRS) as unfiltered:
         solution = unfiltered_solve(
             str(tmp_path / "env"),
-            [FILTERED],
+            channels,
             [unfiltered],
             SUBDIRS,
             [MatchSpec(s) for s in specs],
@@ -60,6 +60,14 @@ def test_strict_priority_is_overridden(solver, tmp_path, monkeypatch):
     monkeypatch.setenv("CONDA_CHANNEL_PRIORITY", "strict")
     reset_context()
     assert taken(tmp_path, "python=3.13.11") == ["python-3.13.11-h0_100_cp313"]
+
+
+def test_filtered_channel_through_defaults(solver, tmp_path, monkeypatch):
+    monkeypatch.setenv("CONDA_DEFAULT_CHANNELS", FILTERED)
+    reset_context()
+    assert taken(tmp_path, "altair", channels=("defaults",)) == [
+        "jinja2-3.1.6-py314h0_0"
+    ]
 
 
 def test_filtered_channel_preferred(solver, tmp_path):
