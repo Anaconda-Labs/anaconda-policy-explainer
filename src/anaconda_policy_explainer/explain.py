@@ -8,6 +8,7 @@ from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 from dataclasses import dataclass
+from dataclasses import replace
 
 from conda.base.context import context
 from conda.models.match_spec import MatchSpec
@@ -16,6 +17,7 @@ from conda.models.records import PackageRecord
 from .api import ChannelPolicy
 from .api import PolicyApi
 from .api import default_site_domain
+from .api import repo_org_id
 from .channels import PolicyChannel
 from .channels import policy_channels
 from .plugin import Solve
@@ -43,11 +45,23 @@ class _Policed:
     source_url: str
 
 
+def _with_org(channel: PolicyChannel, api: PolicyApi) -> PolicyChannel | None:
+    """``channel`` with its organization; Anaconda channels ask the repo."""
+    if not channel.anaconda:
+        return channel
+    org_id = repo_org_id(channel.url)
+    org = api.org_name(org_id) if org_id else None
+    return replace(channel, org=org) if org else None
+
+
 def _policed(channels: Iterable[PolicyChannel]) -> list[_Policed]:
     found = []
-    for channel in channels:
-        api = PolicyApi(channel.auth_domain)
-        policy = api.channel_policy(channel.org, channel.channel)
+    for candidate in channels:
+        api = PolicyApi(candidate.auth_domain)
+        channel = _with_org(candidate, api)
+        if channel is None:
+            continue
+        policy = api.channel_policy(channel)
         source_url = unfiltered_url(channel, policy.source) if policy else None
         if policy and source_url:
             found.append(_Policed(channel, policy, api, source_url))
@@ -74,9 +88,7 @@ def _entries(
     budget are kept, marked as not checked."""
 
     def entry(record: PackageRecord) -> Entry:
-        files = policed.api.files(
-            policed.channel.org, policed.channel.channel, record.name, record.version
-        )
+        files = policed.api.files(policed.channel, record.name, record.version)
         status = file_status(record, files)
         return Entry(
             dist(record),

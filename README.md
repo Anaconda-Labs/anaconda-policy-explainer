@@ -69,7 +69,9 @@ The plugin compares your channel with the public channel it is built from, such 
 ## How it works
 
 1. A pre-solve hook records what the solve was asked to do: the specs, channels, target environment and platforms.
-2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) among those channels and reads each channel's policy and source from the Anaconda API.
+2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for channels on `repo.anaconda.cloud` among those channels and reads each channel's policy and source from the Anaconda API:
+   - organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) name their organization;
+   - Anaconda channels such as `https://repo.anaconda.cloud/repo/main` are filtered by the policy of the organization your credentials act as. The plugin asks the repo which organization that is (the `x-auth-org-id` header of a HEAD request) and reads that organization's policy for the channel.
 3. For a channel built from `main`, `r`, `msys2`, `conda-forge` or an external mirror, it downloads the source's index through conda's repodata cache, for your platform and `noarch`, into a temporary local channel.
 4. It solves again with the same solver, specs and environment, with the local channel added at the lowest priority and channel priority set to flexible. The solver only takes packages from the local channel when your channels cannot provide them, so those packages are what the environment needs from outside your channels.
 5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, why, and which CVEs the file has. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
@@ -107,6 +109,8 @@ APE_LIVE_REMOVED_SPEC=urllib3=2.6.0 \
 ANACONDA_AUTH_API_KEY=$(anaconda auth api-key) \
 pixi run test-live
 ```
+
+For an Anaconda channel filtered by an organization policy, `APE_LIVE_MAIN_API_KEY` (a key for that organization) and `APE_LIVE_MAIN_REMOVED_SPEC` (a spec its policy on `main` removed) add a test against `https://repo.anaconda.cloud/repo/main`.
 
 `tests/data/environments` holds environment files that use `defaults`; the live tests point `default_channels` at the channel under test.
 

@@ -6,6 +6,12 @@ Opt-in: these need a channel with a policy and an API key for it.
     APE_LIVE_REMOVED_SPEC  a spec the channel's policy removed, e.g. urllib3=2.6.0
     ANACONDA_AUTH_API_KEY  an API key for the channel's organization
 
+For an Anaconda channel (repo.anaconda.cloud/repo/main) filtered by an
+organization policy, also set:
+
+    APE_LIVE_MAIN_API_KEY       an API key for that organization
+    APE_LIVE_MAIN_REMOVED_SPEC  a spec its policy on main removed
+
 conda runs with an empty HOME so that no user configuration (such as an
 unfiltered default channel) can satisfy what the policy removed, and with
 APE_LIVE_CHANNEL as its only default channel, which the environment files in
@@ -143,3 +149,30 @@ def test_pinned_environment_blocks_only_its_pins(conda, solver: str, tmp_path: P
     assert removed
     assert set(removed) <= pinned
     assert all(row[1] == "your request" for row in rows(output) if row[0] in removed)
+
+
+MAIN_KEY = os.environ.get("APE_LIVE_MAIN_API_KEY", "")
+MAIN_REMOVED_SPEC = os.environ.get("APE_LIVE_MAIN_REMOVED_SPEC", "")
+
+
+@pytest.mark.skipif(
+    not (MAIN_KEY and MAIN_REMOVED_SPEC),
+    reason="set APE_LIVE_MAIN_API_KEY and APE_LIVE_MAIN_REMOVED_SPEC",
+)
+@pytest.mark.parametrize("solver", SOLVERS)
+def test_anaconda_channel_filtered_by_organization(conda, solver: str, tmp_path: Path):
+    output = conda(
+        "create",
+        "--prefix",
+        str(tmp_path / "env"),
+        "--override-channels",
+        "-c",
+        "https://repo.anaconda.cloud/repo/main",
+        "--dry-run",
+        "--solver",
+        solver,
+        MAIN_REMOVED_SPEC,
+        ANACONDA_AUTH_API_KEY=MAIN_KEY,
+    )
+    assert f"({HINT_CODE}) main for organization " in output
+    assert [row[1] for row in rows(output)] == ["your request"]

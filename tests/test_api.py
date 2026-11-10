@@ -5,6 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 from anaconda_policy_explainer.api import ChannelDetails
+from anaconda_policy_explainer.api import parse_anaconda_details
 from anaconda_policy_explainer.api import parse_details
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.api import policy_lines
@@ -137,3 +138,14 @@ def test_files_carry_cve_statuses():
     files = parse_files(load("files-urllib3-2.6.1"))
     built = [f for f in files if f.fn == "urllib3-2.6.1-py313h06a4308_0.conda"][0]
     assert Counter(built.cve_statuses) == {"cleared": 9, "reported": 4, "active": 1}
+
+
+def test_anaconda_channel_policy_from_org_channel_list():
+    channels = load("org-channels")
+    assert parse_anaconda_details(channels, "main") == ChannelDetails(
+        "00000000-0000-0000-0000-000000000006", "organization_policy", "main"
+    )
+    assert parse_anaconda_details(channels, "r") == ChannelDetails(None, None, "r")
+    assert parse_anaconda_details(channels, "nonexistent") == ChannelDetails(
+        None, None, None
+    )

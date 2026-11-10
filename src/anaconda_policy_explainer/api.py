@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from .channels import PolicyChannel
+
 TIMEOUT = 10.0
 PAGE = 200
 
@@ -120,6 +122,18 @@ def parse_details(payload: dict[str, Any]) -> ChannelDetails:
     )
 
 
+def parse_anaconda_details(channels: list[dict[str, Any]], name: str) -> ChannelDetails:
+    """Policy of the Anaconda channel ``name`` from an organization's channel list.
+
+    The per-channel details route reports no policy for Anaconda channels;
+    the list does.
+    """
+    for entry in channels:
+        if entry.get("type") == "anaconda" and entry.get("name") == name:
+            return parse_details(entry)
+    return ChannelDetails(None, None, None)
+
+
 def parse_files(payload: dict[str, Any]) -> list[FileStatus]:
     files = []
     for item in payload.get("items", []):
@@ -135,6 +149,20 @@ def parse_files(payload: dict[str, Any]) -> list[FileStatus]:
             )
         )
     return files
+
+
+def repo_org_id(channel_url: str) -> str | None:
+    """Organization the repo applies to the user's credentials for a channel.
+
+    The repo names it in an ``x-auth-org-id`` response header; a HEAD request
+    for the noarch index is enough. Uses conda's session, so the credentials
+    are the ones conda used.
+    """
+    from conda.gateways.connection.session import get_session
+
+    url = f"{channel_url.rstrip('/')}/noarch/repodata.json"
+    response = get_session(url).head(url, timeout=TIMEOUT)
+    return response.headers.get("x-auth-org-id") or None
 
 
 def default_site_domain() -> str:
@@ -156,10 +184,17 @@ class PolicyApi:
         response.raise_for_status()
         return response.json()
 
-    def channel_policy(self, org: str, channel: str) -> ChannelPolicy | None:
-        details = parse_details(
-            self._get(f"/api/organizations/{org}/channels/{org}/{channel}/details")
-        )
+    def org_name(self, org_id: str) -> str | None:
+        name = self._get(f"/api/auth/organizations/{org_id}").get("name")
+        return str(name) if name else None
+
+    def channel_policy(self, channel: PolicyChannel) -> ChannelPolicy | None:
+        org = channel.org
+        if channel.anaconda:
+            channels = self._get(f"/api/organizations/{org}/channels")
+            details = parse_anaconda_details(channels, channel.channel)
+        else:
+            details = parse_details(self._get(f"{channel.api_path}/details"))
         if not details.policy_id:
             return None
         # repo-policies/v2/{id} rejects schema v1 policies; the unversioned
@@ -174,12 +209,9 @@ class PolicyApi:
         return ChannelPolicy(name, tuple(lines), details.source)
 
     def files(
-        self, org: str, channel: str, name: str, version: str
+        self, channel: PolicyChannel, name: str, version: str
     ) -> list[FileStatus]:
-        path = (
-            f"/api/organizations/{org}/channels/{org}/{channel}"
-            f"/artifacts/conda/{name}/files"
-        )
+        path = f"{channel.api_path}/artifacts/conda/{name}/files"
         payload = self._get(path, version=version, limit=PAGE)
         total = payload.get("total_count", 0)
         if total > len(payload.get("items", [])):

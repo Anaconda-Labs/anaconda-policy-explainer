@@ -1,0 +1,59 @@
+[
+ {
+  "assigned_policy": {
+   "id": "00000000-0000-0000-0000-000000000006",
+   "name": "organization_policy",
+   "state": "scheduled"
+  },
+  "name": "main",
+  "privacy": "internal",
+  "sources": [
+   "main"
+  ],
+  "type": "anaconda"
+ },
+ {
+  "assigned_policy": {
+   "id": "00000000-0000-0000-0000-000000000007",
+   "name": "organization_policy",
+   "state": "done"
+  },
+  "name": "main-x",
+  "privacy": "internal",
+  "sources": [
+   "main-x"
+  ],
+  "type": "anaconda"
+ },
+ {
+  "assigned_policy": null,
+  "name": "r",
+  "privacy": "internal",
+  "sources": [
+   "r"
+  ],
+  "type": "anaconda"
+ },
+ {
+  "assigned_policy": null,
+  "name": "acme/staging--main",
+  "privacy": "internal",
+  "sources": [
+   "main"
+  ],
+  "type": "virtual"
+ },
+ {
+  "assigned_policy": {
+   "id": "00000000-0000-0000-0000-000000000008",
+   "name": "acme/data-default-policy",
+   "state": "scheduled"
+  },
+  "name": "acme/data--main",
+  "privacy": "internal",
+  "sources": [
+   "main"
+  ],
+  "type": "virtual"
+ }
+]

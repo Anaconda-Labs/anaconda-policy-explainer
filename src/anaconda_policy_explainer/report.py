@@ -22,7 +22,9 @@ from .channels import PolicyChannel
 INDENT = " " * 6  # aligns under conda's "  - (hint_code) " hint prefix
 REQUESTED = "your request"
 
-_CVE_REASON = re.compile(r"CVE score of ([\d.]+) is greater than ([\d.]+)")
+_CVE_REASON = re.compile(
+    r"CVE score of ([\d.]+) is greater than ([\d.]+)(?: and CVE status is '(\w+)')?"
+)
 
 
 @dataclass(frozen=True)
@@ -82,7 +84,8 @@ def shorten(reasons: Iterable[str]) -> str:
     for reason in reasons:
         match = _CVE_REASON.fullmatch(reason)
         if match:
-            cves.append((float(match[1]), f"CVE {match[1]} > {match[2]}"))
+            status = f", {match[3]}" if match[3] else ""
+            cves.append((float(match[1]), f"CVE {match[1]} > {match[2]}{status}"))
         elif reason not in other:
             other.append(reason)
     if cves:
@@ -145,7 +148,7 @@ def render(
     if width is None:
         width = shutil.get_terminal_size((100, 24)).columns - len(INDENT)
     lines = [
-        f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"',
+        f'{channel.label} is filtered by policy "{policy.name}"',
         *(f"{INDENT}{line}" for line in policy.lines),
         *(f"{INDENT}{line}" for line in _table(ordered, width, color)),
         *(f"{INDENT}note: {note}" for note in notes),

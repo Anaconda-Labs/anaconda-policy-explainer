@@ -82,6 +82,11 @@ def test_shorten():
     ) == ("CVE 7.5 > 7; License GPL is excluded")
 
 
+def test_shorten_cve_with_status():
+    reason = "CVE score of 9.1 is greater than 9 and CVE status is 'reported'"
+    assert shorten([reason]) == "CVE 9.1 > 9, reported"
+
+
 def test_cve_summary():
     files = parse_files(json.loads((DATA / "files-urllib3-2.6.1.json").read_text()))
     built = record("urllib3", "2.6.1", "py313h06a4308_0")
