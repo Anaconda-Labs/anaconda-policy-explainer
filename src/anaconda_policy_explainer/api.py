@@ -180,9 +180,19 @@ class PolicyApi:
         self._client = BaseClient(domain=domain)
 
     def _get(self, path: str, **params: Any) -> Any:
-        response = self._client.get(path, params=params, timeout=TIMEOUT)
-        response.raise_for_status()
-        return response.json()
+        """GET with one retry for server errors, rate limiting and connection
+        problems."""
+        import requests
+
+        for attempt in range(2):
+            try:
+                response = self._client.get(path, params=params, timeout=TIMEOUT)
+                response.raise_for_status()
+                return response.json()
+            except requests.RequestException as error:
+                status = error.response.status_code if error.response is not None else 0
+                if attempt or 400 <= status < 500 and status != 429:
+                    raise
 
     def org_name(self, org_id: str) -> str | None:
         name = self._get(f"/api/auth/organizations/{org_id}").get("name")

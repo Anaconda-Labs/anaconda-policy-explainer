@@ -79,7 +79,7 @@ The plugin compares your channel with the public channel it is built from, such 
 5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, why, and which CVEs the file has. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
 6. It reports one section per channel policy.
 
-API calls go to the domain anaconda-auth uses for the channel (`anaconda.com` for `repo.anaconda.cloud`, or a `channel_settings` `auth_domain`). If that differs from your default anaconda-auth site, the report says so. Lookups for one channel stop after 30 seconds; packages that could not be checked in time, or whose lookup failed, are still listed, marked as not checked.
+API calls go to the domain anaconda-auth uses for the channel (`anaconda.com` for `repo.anaconda.cloud`, or a `channel_settings` `auth_domain`). If that differs from your default anaconda-auth site, the report says so. Packages whose lookup fails are still listed, marked as not checked.
 
 If the second solve also fails, the failure is not caused by the policy alone, and the plugin stays silent. If anything else goes wrong, the plugin also stays silent and conda's error is shown unchanged.
 

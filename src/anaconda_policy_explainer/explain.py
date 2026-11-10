@@ -6,7 +6,6 @@ import logging
 import sys
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import wait
 from dataclasses import dataclass
 from dataclasses import replace
 
@@ -34,7 +33,6 @@ from .source import unfiltered_url
 log = logging.getLogger(__name__)
 
 WORKERS = 8
-BUDGET = 30.0  # seconds for API lookups per channel
 
 
 @dataclass(frozen=True)
@@ -84,8 +82,8 @@ def _entries(
     solution: tuple[PackageRecord, ...],
     requested: list[MatchSpec],
 ) -> list[Entry]:
-    """One entry per record; records the API could not check within the time
-    budget are kept, marked as not checked."""
+    """One entry per record; records the API could not check are kept, marked
+    as not checked."""
 
     def entry(record: PackageRecord) -> Entry:
         files = policed.api.files(policed.channel, record.name, record.version)
@@ -103,15 +101,11 @@ def _entries(
         reason = f"not checked ({cause})"
         return Entry(dist(record), why(record, solution, requested), False, reason)
 
-    pool = ThreadPoolExecutor(WORKERS)
-    futures = {pool.submit(entry, record): record for record in records}
-    done, _ = wait(futures, timeout=BUDGET)
-    pool.shutdown(wait=False, cancel_futures=True)
+    with ThreadPoolExecutor(WORKERS) as pool:
+        futures = {pool.submit(entry, record): record for record in records}
     entries = []
     for future, record in futures.items():
-        if future not in done:
-            entries.append(unchecked(record, f"no answer within {BUDGET:.0f}s"))
-        elif error := future.exception():
+        if error := future.exception():
             entries.append(unchecked(record, type(error).__name__))
         else:
             entries.append(future.result())
