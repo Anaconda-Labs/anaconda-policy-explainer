@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 
+import pytest
 from conda.models.match_spec import MatchSpec
 from conda.models.records import PackageRecord
 
@@ -10,6 +11,7 @@ from anaconda_policy_explainer.api import ChannelPolicy
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.channels import PolicyChannel
 from anaconda_policy_explainer.report import Entry
+from anaconda_policy_explainer.report import cve_summary
 from anaconda_policy_explainer.report import file_status
 from anaconda_policy_explainer.report import render
 from anaconda_policy_explainer.report import shorten
@@ -49,7 +51,7 @@ def test_requested():
 
 def test_needed_by_solution_records():
     assert why(PYTHON, SOLUTION, [MatchSpec("urllib3")]) == (
-        "needed by cffi-2.1.1-py313h3b52fac_0 and 1 others"
+        "by cffi-2.1.1-py313h3b52fac_0 (+1)"
     )
 
 
@@ -79,41 +81,56 @@ def test_shorten():
     ) == ("CVE 7.5 > 7; License GPL is excluded")
 
 
+def test_cve_summary():
+    files = parse_files(json.loads((DATA / "files-urllib3-2.6.1.json").read_text()))
+    built = record("urllib3", "2.6.1", "py313h06a4308_0")
+    status = file_status(built, files)
+    assert status is not None
+    assert cve_summary(status.cve_statuses) == "1 active\n4 reported\n9 cleared"
+
+
+def test_cve_summary_none():
+    assert cve_summary([]) == ""
+
+
 def test_render_section():
     entries = [
         Entry(
             "python-3.13.11-hcf712cf_100_cp313",
-            "needed by cffi-2.1.1-py313h3b52fac_0",
+            "by cffi-2.1.1-py313h3b52fac_0",
             True,
             "CVE score of 9.8 is greater than 7",
+            ("active", "active", "reported", "cleared"),
         ),
         Entry(
             "urllib3-2.6.1-py313h06a4308_0",
             "requested",
             True,
-            "CVE score of 7.9 is greater than 7",
+            "CVE score of 8.9 is greater than 7",
+            ("active", "reported", "cleared"),
         ),
+        Entry("zstd-1.5.8-h0_0", "by python-3.13.11-hcf712cf_100_cp313", False, None),
+    ]
+    expected = (Path(__file__).parent / "data" / "report-section.txt").read_text()
+    assert render(CHANNEL, POLICY, entries, ["a note"], width=140) == expected.rstrip(
+        "\n"
+    )
+
+
+@pytest.mark.parametrize("width", [100, 80])
+def test_render_fits_width(width):
+    entries = [
         Entry(
-            "zstd-1.5.8-h0_0",
-            "needed by python-3.13.11-hcf712cf_100_cp313",
-            False,
-            None,
+            "python-3.13.11-hcf712cf_100_cp313",
+            "by cffi-2.1.1-py313h3b52fac_0",
+            True,
+            "CVE score of 9.8 is greater than 7",
+            ("active", "reported"),
         ),
     ]
-    assert render(CHANNEL, POLICY, entries, ["a note"]) == "\n".join(
-        [
-            'acme/analysts is filtered by policy "secure"',
-            "      removes packages where:",
-            "        cve_score > 7",
-            "      blocked:",
-            "        urllib3-2.6.1-py313h06a4308_0 (requested): CVE 7.9 > 7",
-            "        python-3.13.11-hcf712cf_100_cp313"
-            " (needed by cffi-2.1.1-py313h3b52fac_0): CVE 9.8 > 7",
-            "      not in the channel yet:",
-            "        zstd-1.5.8-h0_0 (needed by python-3.13.11-hcf712cf_100_cp313)",
-            "      note: a note",
-        ]
-    )
+    text = render(CHANNEL, POLICY, entries, width=width)
+    assert text is not None
+    assert max(len(line) for line in text.splitlines()[3:]) <= width + len("      ")
 
 
 def test_render_nothing():

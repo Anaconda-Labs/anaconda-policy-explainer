@@ -131,3 +131,9 @@ def test_fully_removed_version():
     assert Counter(f.reason for f in files).most_common(1)[0][0] == (
         "CVE score of 8.9 is greater than 7"
     )
+
+
+def test_files_carry_cve_statuses():
+    files = parse_files(load("files-urllib3-2.6.1"))
+    built = [f for f in files if f.fn == "urllib3-2.6.1-py313h06a4308_0.conda"][0]
+    assert Counter(built.cve_statuses) == {"cleared": 9, "reported": 4, "active": 1}

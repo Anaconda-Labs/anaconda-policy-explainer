@@ -1,0 +1,3165 @@
+{
+ "items": [
+  {
+   "ckey": "win-64/urllib3-2.6.1-py311haa95532_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py310haa95532_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py312haa95532_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py313haa95532_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py314haa95532_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py312hca03da5_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py314hca03da5_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py313hca03da5_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py310hca03da5_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py311hca03da5_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py313hd43f75c_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py312hd43f75c_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 9.8 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py314hd43f75c_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 9.8 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py310hd43f75c_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 9.8 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py311hd43f75c_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py314h06a4308_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py312h06a4308_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py313h06a4308_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py310h06a4308_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py311h06a4308_0.tar.bz2",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py314haa95532_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py313haa95532_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.6 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py312haa95532_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py311haa95532_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "win-64/urllib3-2.6.1-py310haa95532_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py311hca03da5_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py314hca03da5_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py310hca03da5_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py312hca03da5_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "osx-arm64/urllib3-2.6.1-py313hca03da5_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py313hd43f75c_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py312hd43f75c_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py310hd43f75c_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.2 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py314hd43f75c_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-aarch64/urllib3-2.6.1-py311hd43f75c_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 7.5 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py310h06a4308_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py312h06a4308_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py313h06a4308_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py311h06a4308_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  },
+  {
+   "ckey": "linux-64/urllib3-2.6.1-py314h06a4308_0.conda",
+   "metadata": {
+    "cves": [
+     {
+      "id": "CVE-2026-44431",
+      "score": 8.2,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-44432",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2019-11324",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2020-26137",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66471",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-97687",
+      "score": 7.6,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2026-97689",
+      "score": 8.9,
+      "status": "reported"
+     },
+     {
+      "id": "CVE-2018-20060",
+      "score": 9.8,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-33503",
+      "score": 7.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2026-21441",
+      "score": 8.9,
+      "status": "active"
+     },
+     {
+      "id": "CVE-2019-11236",
+      "score": 6.1,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2025-66418",
+      "score": 8.9,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2021-28363",
+      "score": 6.5,
+      "status": "cleared"
+     },
+     {
+      "id": "CVE-2023-43804",
+      "score": 5.9,
+      "status": "cleared"
+     }
+    ]
+   },
+   "removed_by_policy": true,
+   "removed_reason": "CVE score of 8.9 is greater than 7"
+  }
+ ],
+ "total_count": 40
+}

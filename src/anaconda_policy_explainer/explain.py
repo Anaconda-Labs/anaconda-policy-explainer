@@ -74,9 +74,13 @@ def _entries(
             policed.channel.org, policed.channel.channel, record.name, record.version
         )
         status = file_status(record, files)
-        removed = bool(status and status.removed)
-        reason = status.reason if status else None
-        return Entry(dist(record), why(record, solution, requested), removed, reason)
+        return Entry(
+            dist(record),
+            why(record, solution, requested),
+            bool(status and status.removed),
+            status.reason if status else None,
+            status.cve_statuses if status else (),
+        )
 
     pool = ThreadPoolExecutor(WORKERS)
     futures = [pool.submit(entry, record) for record in records]

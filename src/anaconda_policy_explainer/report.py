@@ -2,12 +2,18 @@
 
 from __future__ import annotations
 
+import io
 import re
+import shutil
+from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass
 
 from conda.models.match_spec import MatchSpec
 from conda.models.records import PackageRecord
+from rich import box
+from rich.console import Console
+from rich.table import Table
 
 from .api import ChannelPolicy
 from .api import FileStatus
@@ -26,6 +32,7 @@ class Entry:
     why: str
     removed: bool
     reason: str | None
+    cve_statuses: tuple[str, ...] = ()
 
 
 def dist(record: PackageRecord) -> str:
@@ -50,9 +57,9 @@ def why(
         )
     )
     if not parents:
-        return "needed"
+        return "dependency"
     others = len(parents) - 1
-    return f"needed by {parents[0]}" + (f" and {others} others" if others else "")
+    return f"by {parents[0]}" + (f" (+{others})" if others else "")
 
 
 def file_status(
@@ -82,29 +89,56 @@ def shorten(reasons: Iterable[str]) -> str:
     return "; ".join(other)
 
 
+STATUS_ORDER = ("active", "reported", "mitigated", "cleared")
+
+
+def cve_summary(statuses: Iterable[str]) -> str:
+    """CVE counts by status, one status per line."""
+    counts = Counter(statuses)
+    order = [*STATUS_ORDER, *sorted(set(counts) - set(STATUS_ORDER))]
+    return "\n".join(f"{counts[status]} {status}" for status in order if counts[status])
+
+
+def _table(entries: list[Entry], width: int) -> list[str]:
+    table = Table(box=box.SQUARE)
+    table.add_column("Package", overflow="fold")
+    table.add_column("Needed", overflow="fold")
+    table.add_column("Reason")
+    table.add_column("CVEs", no_wrap=True)
+    for e in entries:
+        if e.removed:
+            reason = shorten([e.reason]) if e.reason else "removed by policy"
+        else:
+            reason = "not in channel yet"
+        table.add_row(e.label, e.why, reason, cve_summary(e.cve_statuses))
+    out = io.StringIO()
+    console = Console(file=out, width=width, color_system=None, highlight=False)
+    console.print(table)
+    return out.getvalue().rstrip("\n").splitlines()
+
+
 def render(
     channel: PolicyChannel,
     policy: ChannelPolicy,
     entries: Iterable[Entry],
     notes: Iterable[str] = (),
+    width: int | None = None,
 ) -> str | None:
-    """Report section for one channel policy, or None if it explains nothing."""
-    ordered = sorted(entries, key=lambda e: (e.why != "requested", e.label))
-    removed = [e for e in ordered if e.removed]
-    absent = [e for e in ordered if not e.removed]
-    if not removed and not absent:
+    """Report section for one channel policy, or None if it explains nothing.
+
+    Rendered as plain text: conda prints hint text as given.
+    """
+    ordered = sorted(
+        entries, key=lambda e: (not e.removed, e.why != "requested", e.label)
+    )
+    if not ordered:
         return None
+    if width is None:
+        width = shutil.get_terminal_size((100, 24)).columns - len(INDENT)
     lines = [
         f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"',
         *(f"{INDENT}{line}" for line in policy.lines),
+        *(f"{INDENT}{line}" for line in _table(ordered, width)),
+        *(f"{INDENT}note: {note}" for note in notes),
     ]
-    if removed:
-        lines.append(f"{INDENT}blocked:")
-        for e in removed:
-            reason = f": {shorten([e.reason])}" if e.reason else ""
-            lines.append(f"{INDENT}  {e.label} ({e.why}){reason}")
-    if absent:
-        lines.append(f"{INDENT}not in the channel yet:")
-        lines.extend(f"{INDENT}  {e.label} ({e.why})" for e in absent)
-    lines.extend(f"{INDENT}note: {note}" for note in notes)
     return "\n".join(lines)

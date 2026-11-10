@@ -56,6 +56,7 @@ def conda(tmp_path: Path):
         "HOME": str(home),
         "CONDARC": str(condarc),
         "CONDA_PKGS_DIRS": str(tmp_path / "pkgs"),
+        "COLUMNS": "200",
     }
 
     def run(*args: str, **extra: str) -> str:
@@ -72,9 +73,19 @@ def conda(tmp_path: Path):
     return run
 
 
+def rows(output: str) -> list[list[str]]:
+    """Report table rows (Package, Needed, Reason, CVEs), header excluded."""
+    cells = [
+        [c.strip() for c in line.strip().strip("│").split("│")]
+        for line in output.splitlines()
+        if line.strip().startswith("│")
+    ]
+    # libmamba's error message draws its problem tree with "│" too
+    return [row for row in cells if len(row) == 4 and row[0] and row[0] != "Package"]
+
+
 def blocked(output: str) -> list[str]:
-    lines = output.split("blocked:\n", 1)[-1].splitlines()
-    return [line.split()[0] for line in lines if line.startswith(" " * 8)]
+    return [row[0] for row in rows(output) if row[2] != "not in channel yet"]
 
 
 def assert_explained(output: str) -> None:
@@ -131,4 +142,4 @@ def test_pinned_environment_blocks_only_its_pins(conda, solver: str, tmp_path: P
     removed = blocked(output)
     assert removed
     assert set(removed) <= pinned
-    assert all(f"{dist} (requested)" in output for dist in removed)
+    assert all(row[1] == "requested" for row in rows(output) if row[0] in removed)

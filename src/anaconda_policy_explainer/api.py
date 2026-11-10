@@ -27,6 +27,7 @@ class FileStatus:
     fn: str
     removed: bool
     reason: str | None
+    cve_statuses: tuple[str, ...] = ()
 
 
 GROUP_WORDS = {"or": "any of", "and": "all of"}
@@ -123,12 +124,14 @@ def parse_files(payload: dict[str, Any]) -> list[FileStatus]:
     files = []
     for item in payload.get("items", []):
         subdir, _, fn = item["ckey"].partition("/")
+        cves = (item.get("metadata") or {}).get("cves") or []
         files.append(
             FileStatus(
                 subdir=subdir,
                 fn=fn,
                 removed=bool(item.get("removed_by_policy")),
                 reason=item.get("removed_reason"),
+                cve_statuses=tuple(c.get("status") or "unknown" for c in cves),
             )
         )
     return files

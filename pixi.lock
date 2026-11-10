@@ -4796,6 +4796,7 @@ packages:
   requires_dist:
   - anaconda-auth>=0.15
   - conda>=26.7
+  - rich>=13
   - mypy ; extra == 'dev'
   - pytest ; extra == 'dev'
   - ruff ; extra == 'dev'

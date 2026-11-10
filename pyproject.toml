@@ -12,6 +12,7 @@ requires-python = ">=3.10"
 dependencies = [
     "conda>=26.7",
     "anaconda-auth>=0.15",
+    "rich>=13",
 ]
 
 [project.urls]

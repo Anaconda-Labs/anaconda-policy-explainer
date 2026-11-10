@@ -16,25 +16,29 @@ Next steps:
   - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
       removes packages where:
         cve_score > 7
-      blocked:
-        urllib3-2.6.0-py313h06a4308_0 (requested): CVE 8.9 > 7
+      ┌───────────────────────────────┬───────────┬─────────────┬────────────┐
+      │ Package                       │ Needed    │ Reason      │ CVEs       │
+      ├───────────────────────────────┼───────────┼─────────────┼────────────┤
+      │ urllib3-2.6.0-py313h06a4308_0 │ requested │ CVE 8.9 > 7 │ 1 reported │
+      │                               │           │             │ 9 cleared  │
+      └───────────────────────────────┴───────────┴─────────────┴────────────┘
 ```
 
-For an environment, the report lists every build the policy removed that the environment needs, and what needed it:
+For an environment, the table lists every build the policy removed that the environment needs, what needed it, and the build's CVEs by status:
 
 ```
-Next steps:
-  - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
-      removes packages where:
-        cve_score > 7
-      blocked:
-        jinja2-3.1.6-py313h06a4308_1 (requested): CVE 8.6 > 7
-        python-3.13.18-h3ef32e2_100_cp313 (requested): CVE 7.2 > 7
-        urllib3-2.8.0-py313h06a4308_1 (requested): CVE 8.9 > 7
-        bzip2-1.0.8-h5eee18b_6 (needed by python-3.13.18-h3ef32e2_100_cp313): CVE 9.8 > 7
-        openssl-3.5.9-h1b28b03_0 (needed by python-3.13.18-h3ef32e2_100_cp313): CVE 9.1 > 7
-        zlib-1.3.2-h47b2149_0 (needed by sqlite-3.53.4-h795bf6d_0 and 1 others): CVE 7.5 > 7
-        ...
+      ┌───────────────────────────────────┬───────────────────────────────────────────┬──────────────┬─────────────┐
+      │ Package                           │ Needed                                    │ Reason       │ CVEs        │
+      ├───────────────────────────────────┼───────────────────────────────────────────┼──────────────┼─────────────┤
+      │ jinja2-3.1.6-py313hca03da5_1      │ requested                                 │ CVE 8.6 > 7  │ 4 cleared   │
+      │ python-3.13.18-hc2e2225_100_cp313 │ requested                                 │ CVE 7.5 > 7  │ 1 reported  │
+      │                                   │                                           │              │ 86 cleared  │
+      │                                   │                                           │              │ 5 disputed  │
+      │ ncurses-6.6-h2f07c83_0            │ by python-3.13.18-hc2e2225_100_cp313 (+2) │ CVE 9.8 > 7  │ 14 cleared  │
+      │ zlib-1.3.2-hb4cf58c_0             │ by sqlite-3.53.4-h1cce5ff_0 (+1)          │ CVE 9.8 > 7  │ 1 reported  │
+      │                                   │                                           │              │ 8 cleared   │
+      │ ...                               │                                           │              │             │
+      └───────────────────────────────────┴───────────────────────────────────────────┴──────────────┴─────────────┘
 ```
 
 The policy is shown as it is stored, one rule per line, with nested groups indented:
@@ -67,7 +71,7 @@ The plugin compares your channel with the public channel it is built from, such 
 2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) among those channels and reads each channel's policy and source from the Anaconda API.
 3. For a channel built from `main`, `r`, `msys2`, `conda-forge` or an external mirror, it downloads the source's index through conda's repodata cache, for your platform and `noarch`, into a temporary local channel.
 4. It solves again with the same solver, specs and environment, with the local channel added at the lowest priority and channel priority set to flexible. The solver only takes packages from the local channel when your channels cannot provide them, so those packages are what the environment needs from outside your channels.
-5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, and why. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
+5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, why, and which CVEs the file has. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
 6. It reports one section per channel policy.
 
 API calls go to the domain anaconda-auth uses for the channel (`anaconda.com` for `repo.anaconda.cloud`, or a `channel_settings` `auth_domain`). If that differs from your default anaconda-auth site, the report says so. Lookups for one channel stop after 30 seconds; the report then says how many packages were not checked.
