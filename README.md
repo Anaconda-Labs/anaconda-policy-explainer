@@ -5,7 +5,7 @@
 
 A conda plugin that explains solve failures caused by Anaconda channel policies.
 
-Organization channels on `repo.anaconda.cloud` can have a policy that removes packages, for example every build with a CVE score above 7. When a solve then fails, conda reports missing packages or unsatisfiable dependencies but not why they are missing. This plugin adds the policy, the packages it removed, and the reason for each to conda's error output.
+Channels on `repo.anaconda.cloud` can be filtered by an organization's policy that removes packages, for example every build with a CVE score above 7: the organization's own channels, and Anaconda channels such as `main` as served to that organization. When a solve then fails, conda reports missing packages or unsatisfiable dependencies but not why they are missing. This plugin adds the policy, the packages it removed, and the reason for each to conda's error output.
 
 ```
 PackagesNotFoundInChannelsError: The following packages are not available from current channels:
@@ -16,30 +16,32 @@ Next steps:
   - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
       removes packages where:
         cve_score > 7
-      ┌───────────────────────────────┬───────────┬─────────────┬────────────┐
-      │ Package                       │ Needed    │ Reason      │ CVEs       │
-      ├───────────────────────────────┼───────────┼─────────────┼────────────┤
-      │ urllib3-2.6.0-py313h06a4308_0 │ requested │ CVE 8.9 > 7 │ 1 active   │
-      │                               │           │             │ 4 reported │
-      │                               │           │             │ 9 cleared  │
-      └───────────────────────────────┴───────────┴─────────────┴────────────┘
+      ┌───────────────────────────────┬──────────────┬─────────────┬────────────┐
+      │ Package                       │ Required by  │ Reason      │ CVEs       │
+      ├───────────────────────────────┼──────────────┼─────────────┼────────────┤
+      │ urllib3-2.6.0-py313h06a4308_0 │ your request │ CVE 8.9 > 7 │ 1 active   │
+      │                               │              │             │ 4 reported │
+      │                               │              │             │ 9 cleared  │
+      └───────────────────────────────┴──────────────┴─────────────┴────────────┘
 ```
 
-For an environment, the table lists every build the policy removed that the environment needs, what needed it, and the build's CVEs by status:
+For an environment, the table lists every build the policy removed that the environment needs, what required it, and the build's CVEs by status:
 
 ```
-      ┌───────────────────────────────────┬───────────────────────────────────────────┬──────────────┬─────────────┐
-      │ Package                           │ Needed                                    │ Reason       │ CVEs        │
-      ├───────────────────────────────────┼───────────────────────────────────────────┼──────────────┼─────────────┤
-      │ jinja2-3.1.6-py313hca03da5_1      │ requested                                 │ CVE 8.6 > 7  │ 4 cleared   │
-      │ python-3.13.18-hc2e2225_100_cp313 │ requested                                 │ CVE 7.5 > 7  │ 1 reported  │
-      │                                   │                                           │              │ 86 cleared  │
-      │                                   │                                           │              │ 5 disputed  │
-      │ ncurses-6.6-h2f07c83_0            │ by python-3.13.18-hc2e2225_100_cp313 (+2) │ CVE 9.8 > 7  │ 14 cleared  │
-      │ zlib-1.3.2-hb4cf58c_0             │ by sqlite-3.53.4-h1cce5ff_0 (+1)          │ CVE 9.8 > 7  │ 1 reported  │
-      │                                   │                                           │              │ 8 cleared   │
-      │ ...                               │                                           │              │             │
-      └───────────────────────────────────┴───────────────────────────────────────────┴──────────────┴─────────────┘
+      ┌───────────────────────────────────┬────────────────────────────────────────┬─────────────┬────────────┐
+      │ Package                           │ Required by                            │ Reason      │ CVEs       │
+      ├───────────────────────────────────┼────────────────────────────────────────┼─────────────┼────────────┤
+      │ jinja2-3.1.6-py313h06a4308_1      │ your request                           │ CVE 8.6 > 7 │ 4 cleared  │
+      ├───────────────────────────────────┼────────────────────────────────────────┼─────────────┼────────────┤
+      │ python-3.13.18-h3ef32e2_100_cp313 │ your request                           │ CVE 7.2 > 7 │ 1 reported │
+      │                                   │                                        │             │ 86 cleared │
+      │                                   │                                        │             │ 5 disputed │
+      ├───────────────────────────────────┼────────────────────────────────────────┼─────────────┼────────────┤
+      │ ncurses-6.6-hfaaeb4e_0            │ python-3.13.18-h3ef32e2_100_cp313 (+2) │ CVE 7.1 > 7 │ 14 cleared │
+      ├───────────────────────────────────┼────────────────────────────────────────┼─────────────┼────────────┤
+      │ zlib-1.3.2-h47b2149_0             │ sqlite-3.53.4-h795bf6d_0 (+1)          │ CVE 7.5 > 7 │ 1 reported │
+      │                                   │                                        │             │ 8 cleared  │
+      └───────────────────────────────────┴────────────────────────────────────────┴─────────────┴────────────┘
 ```
 
 The policy is shown as it is stored, one rule per line, with nested groups indented:
@@ -72,7 +74,7 @@ The plugin compares your channel with the public channel it is built from, such 
 2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for channels on `repo.anaconda.cloud` among those channels and reads each channel's policy and source from the Anaconda API:
    - organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) name their organization;
    - Anaconda channels such as `https://repo.anaconda.cloud/repo/main` are filtered by the policy of the organization your credentials act as. The plugin asks the repo which organization that is (the `x-auth-org-id` header of a HEAD request) and reads that organization's policy for the channel.
-3. For a channel built from `main`, `r`, `msys2`, `conda-forge` or an external mirror, it downloads the source's index through conda's repodata cache, for your platform and `noarch`, into a temporary local channel.
+3. For a channel built from `main`, `r`, `msys2`, `conda-forge` or an external mirror, it downloads the source's index through conda's repodata cache, for your platform and `noarch`, and links it into a local channel in your user cache directory. The local channel keeps the same path between runs, so conda caches its index only once.
 4. It solves again with the same solver, specs and environment, with the local channel added at the lowest priority and channel priority set to flexible. The solver only takes packages from the local channel when your channels cannot provide them, so those packages are what the environment needs from outside your channels.
 5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, why, and which CVEs the file has. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
 6. It reports one section per channel policy.
@@ -81,7 +83,7 @@ API calls go to the domain anaconda-auth uses for the channel (`anaconda.com` fo
 
 If the second solve also fails, the failure is not caused by the policy alone, and the plugin stays silent. If anything else goes wrong, the plugin also stays silent and conda's error is shown unchanged.
 
-Upload channels and channels built from sources without a public copy (such as `main-x`) are not explained yet.
+Upload channels, channels built from sources without a public copy (such as `main-x`), and channels on repo hosts other than `repo.anaconda.cloud` are not explained yet.
 
 ## Development
 
