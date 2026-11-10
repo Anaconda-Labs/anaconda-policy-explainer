@@ -1,180 +1,120 @@
-"""Report building from recorded API responses (tests/data/api)."""
+"""Report building from solution records and recorded API responses."""
 
 import json
 from pathlib import Path
 
 from conda.models.match_spec import MatchSpec
+from conda.models.records import PackageRecord
 
 from anaconda_policy_explainer.api import ChannelPolicy
 from anaconda_policy_explainer.api import parse_files
-from anaconda_policy_explainer.api import parse_versions
-from anaconda_policy_explainer.candidates import Findings
-from anaconda_policy_explainer.candidates import Missing
 from anaconda_policy_explainer.channels import PolicyChannel
-from anaconda_policy_explainer.report import BLOCKED_WHY
-from anaconda_policy_explainer.report import Blocked
 from anaconda_policy_explainer.report import Entry
-from anaconda_policy_explainer.report import VersionResult
-from anaconda_policy_explainer.report import group
-from anaconda_policy_explainer.report import matching_versions
-from anaconda_policy_explainer.report import pick_versions
+from anaconda_policy_explainer.report import file_status
 from anaconda_policy_explainer.report import render
 from anaconda_policy_explainer.report import shorten
-from anaconda_policy_explainer.report import version_result
+from anaconda_policy_explainer.report import why
 
 DATA = Path(__file__).parent / "data" / "api"
-SUBDIRS = ("linux-64", "noarch")
 CHANNEL = PolicyChannel(
     "https://repo.anaconda.cloud/repo/acme/analysts", "acme", "analysts", "anaconda.com"
 )
-POLICY = ChannelPolicy("secure", ("removes packages where:", "  cve_score > 7"))
+POLICY = ChannelPolicy("secure", ("removes packages where:", "  cve_score > 7"), "main")
 
 
-def files(name: str, version: str):
-    payload = json.loads((DATA / f"files-{name}-{version}.json").read_text())
-    return parse_files(payload)
-
-
-def urllib3_versions():
-    payload = json.loads((DATA / "artifacts-urllib3.json").read_text())
-    return parse_versions(payload, "urllib3")
-
-
-def test_matching_versions_unconstrained_takes_newest():
-    assert matching_versions(MatchSpec("urllib3"), urllib3_versions()) == [
-        "2.8.0",
-        "2.7.0",
-        "2.6.3",
-    ]
-
-
-def test_matching_versions_constrained():
-    spec = MatchSpec("urllib3 >=2.5,<2.6.3")
-    assert matching_versions(spec, urllib3_versions()) == ["2.6.1", "2.6.0", "2.5.0"]
-
-
-def test_matching_versions_ignores_build_constraint():
-    spec = MatchSpec("urllib3==2.6.0=py314h06a4308_0")
-    assert matching_versions(spec, urllib3_versions()) == ["2.6.0"]
-
-
-def test_fully_removed_version():
-    result = version_result(
-        MatchSpec("urllib3=2.6.0"), "2.6.0", files("urllib3", "2.6.0"), SUBDIRS
+def record(
+    name: str, version: str, build: str, depends=(), fn: str = ""
+) -> PackageRecord:
+    return PackageRecord(
+        name=name,
+        version=version,
+        build=build,
+        build_number=0,
+        depends=list(depends),
+        subdir="linux-64",
+        fn=fn or f"{name}-{version}-{build}.conda",
+        channel="https://repo.anaconda.com/pkgs/main",
     )
-    assert result is not None
-    assert result.removed
-    assert shorten(result.reasons) == "CVE 8.9 > 7"
 
 
-def test_version_with_a_surviving_build_is_not_removed():
-    result = version_result(
-        MatchSpec("urllib3=2.6.3"), "2.6.3", files("urllib3", "2.6.3"), SUBDIRS
+PYTHON = record("python", "3.13.11", "hcf712cf_100_cp313")
+URLLIB3 = record("urllib3", "2.6.1", "py313h06a4308_0", ["python >=3.13,<3.14.0a0"])
+CFFI = record("cffi", "2.1.1", "py313h3b52fac_0", ["python >=3.13,<3.14.0a0"])
+SOLUTION = (PYTHON, URLLIB3, CFFI)
+
+
+def test_requested():
+    assert why(URLLIB3, SOLUTION, [MatchSpec("urllib3=2.6")]) == "requested"
+
+
+def test_needed_by_solution_records():
+    assert why(PYTHON, SOLUTION, [MatchSpec("urllib3")]) == (
+        "needed by cffi-2.1.1-py313h3b52fac_0 and 1 others"
     )
-    assert result is not None
-    assert not result.removed
 
 
-def test_build_constraint_selects_removed_build():
-    spec = MatchSpec("urllib3==2.6.3=py314h06a4308_1")
-    result = version_result(spec, "2.6.3", files("urllib3", "2.6.3"), SUBDIRS)
-    assert result is not None
-    assert result.removed
+def test_file_status_exact_file():
+    files = parse_files(json.loads((DATA / "files-urllib3-2.6.3.json").read_text()))
+    built = record("urllib3", "2.6.3", "py313h06a4308_1")
+    status = file_status(built, files)
+    assert status is not None
+    assert status.fn == "urllib3-2.6.3-py313h06a4308_1.conda"
+    assert status.removed
 
 
-def test_version_without_files_for_platform():
-    result = version_result(
-        MatchSpec("urllib3=2.6.0"), "2.6.0", files("urllib3", "2.6.0"), ("win-arm64",)
-    )
-    assert result is None
+def test_file_status_other_format():
+    files = parse_files(json.loads((DATA / "files-urllib3-2.6.3.json").read_text()))
+    built = record("urllib3", "2.6.3", "py315h06a4308_1", fn="x.conda")
+    assert file_status(built, files) is None
+    built = record("urllib3", "2.6.3", "py315h06a4308_1")
+    status = file_status(built, [f for f in files if not f.fn.endswith(".conda")])
+    assert status is not None
+    assert status.fn.endswith(".tar.bz2")
+    assert not status.removed
 
 
-def test_shorten_keeps_non_cve_reasons():
+def test_shorten():
     assert shorten(
         ["License GPL is excluded", "CVE score of 7.5 is greater than 7"]
     ) == ("CVE 7.5 > 7; License GPL is excluded")
 
 
-def test_group_by_package_requested_first():
-    findings = Findings(
-        missing=[
-            Missing(MatchSpec("jinja2"), True, ()),
-            Missing(
-                MatchSpec("python >=3.15,<3.16.0a0"),
-                False,
-                ("urllib3-2.6.3", "cffi-2.0"),
-            ),
-            Missing(MatchSpec("python >=3.13,<3.14.0a0"), False, ("pycparser-3.12",)),
-        ],
-        blocked=[MatchSpec("urllib3"), MatchSpec("aiofiles==25.1.0=py313h06a4308_0")],
-    )
-    assert group(findings) == [
-        Blocked("jinja2", (MatchSpec("jinja2"),), "requested"),
-        Blocked(
-            "python",
-            (
-                MatchSpec("python >=3.15,<3.16.0a0"),
-                MatchSpec("python >=3.13,<3.14.0a0"),
-            ),
-            "needed by urllib3-2.6.3 and 2 others",
-        ),
-        Blocked("urllib3", (MatchSpec("urllib3"),), BLOCKED_WHY),
-    ]
-
-
-def test_group_label():
-    assert Blocked("python", (MatchSpec("python >=3.15"),), "").label == "python >=3.15"
-    two = (MatchSpec("python >=3.15"), MatchSpec("python <3"))
-    assert Blocked("python", two, "").label == "python"
-
-
-def test_pick_versions_across_specs():
-    specs = (MatchSpec("urllib3 >=2.6.3,<2.7"), MatchSpec("urllib3 <2.3"))
-    picked = pick_versions(specs, urllib3_versions())
-    assert [(v, str(s)) for v, s in picked] == [
-        ("2.6.3", str(specs[0])),
-        ("2.2.3", str(specs[1])),
-        ("2.2.2", str(specs[1])),
-    ]
-
-
 def test_render_section():
     entries = [
         Entry(
-            "urllib3=2.6.0",
-            "requested",
-            (VersionResult("2.6.0", True, ("CVE score of 8.9 is greater than 7",)),),
+            "python-3.13.11-hcf712cf_100_cp313",
+            "needed by cffi-2.1.1-py313h3b52fac_0",
+            True,
+            "CVE score of 9.8 is greater than 7",
         ),
         Entry(
-            "python >=3.15,<3.16.0a0",
-            "needed by urllib3-2.6.3-py315h06a4308_1",
-            (
-                VersionResult("3.15.2", True, ("CVE score of 7.5 is greater than 7",)),
-                VersionResult("3.15.1", False, ()),
-            ),
+            "urllib3-2.6.1-py313h06a4308_0",
+            "requested",
+            True,
+            "CVE score of 7.9 is greater than 7",
+        ),
+        Entry(
+            "zstd-1.5.8-h0_0",
+            "needed by python-3.13.11-hcf712cf_100_cp313",
+            False,
+            None,
         ),
     ]
-    assert render(CHANNEL, POLICY, entries) == "\n".join(
+    assert render(CHANNEL, POLICY, entries, ["a note"]) == "\n".join(
         [
             'acme/analysts is filtered by policy "secure"',
             "      removes packages where:",
             "        cve_score > 7",
             "      blocked:",
-            "        urllib3=2.6.0 (requested)",
-            "          2.6.0 removed: CVE 8.9 > 7",
-            "        python >=3.15,<3.16.0a0 (needed by urllib3-2.6.3-py315h06a4308_1)",
-            "          3.15.2 removed: CVE 7.5 > 7",
+            "        urllib3-2.6.1-py313h06a4308_0 (requested): CVE 7.9 > 7",
+            "        python-3.13.11-hcf712cf_100_cp313"
+            " (needed by cffi-2.1.1-py313h3b52fac_0): CVE 9.8 > 7",
+            "      not in the channel yet:",
+            "        zstd-1.5.8-h0_0 (needed by python-3.13.11-hcf712cf_100_cp313)",
+            "      note: a note",
         ]
     )
 
 
-def test_render_note():
-    entries = [Entry("jinja2", "requested", (VersionResult("3.1.6", True, ()),))]
-    text = render(CHANNEL, POLICY, entries, ["channel authenticates against x"])
-    assert text is not None
-    assert text.endswith("\n      note: channel authenticates against x")
-
-
-def test_render_nothing_removed():
-    entries = [Entry("jinja2", "requested", (VersionResult("3.1.6", False, ()),))]
-    assert render(CHANNEL, POLICY, entries) is None
+def test_render_nothing():
+    assert render(CHANNEL, POLICY, []) is None

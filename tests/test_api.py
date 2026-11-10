@@ -4,8 +4,9 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from anaconda_policy_explainer.api import ChannelDetails
+from anaconda_policy_explainer.api import parse_details
 from anaconda_policy_explainer.api import parse_files
-from anaconda_policy_explainer.api import parse_versions
 from anaconda_policy_explainer.api import policy_lines
 
 DATA = Path(__file__).parent / "data" / "api"
@@ -99,26 +100,29 @@ def test_schema_v2_sections_in_evaluation_order():
     ]
 
 
-def test_versions_newest_first():
-    versions = parse_versions(load("artifacts-urllib3"), "urllib3")
-    assert versions is not None
-    assert versions[:3] == ["2.8.0", "2.7.0", "2.6.3"]
+def test_channel_details_policy_and_source():
+    assert parse_details(load("channel-details")) == ChannelDetails(
+        "00000000-0000-0000-0000-000000000001", "secure", "main"
+    )
 
 
-def test_unknown_package_has_no_versions():
-    assert parse_versions(load("artifacts-notapkg123"), "notapkg123") is None
+def test_upload_channel_has_no_source():
+    details = parse_details({"type": "default", "sources": [], "assigned_policy": None})
+    assert details == ChannelDetails(None, None, None)
 
 
 def test_files_carry_policy_result():
     files = parse_files(load("files-urllib3-2.6.3"))
     linux = [f for f in files if f.subdir in ("linux-64", "noarch")]
     survivors = [f for f in linux if not f.removed]
-    assert {f.build for f in survivors} == {"py315h06a4308_1"}
+    assert {f.fn for f in survivors} == {
+        "urllib3-2.6.3-py315h06a4308_1.conda",
+        "urllib3-2.6.3-py315h06a4308_1.tar.bz2",
+    }
     assert all(f.reason is None for f in survivors)
     assert all(
         f.reason and f.reason.startswith("CVE score of") for f in linux if f.removed
     )
-    assert any(dep.startswith("python >=3.15") for dep in survivors[0].depends)
 
 
 def test_fully_removed_version():

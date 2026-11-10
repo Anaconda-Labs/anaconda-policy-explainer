@@ -17,16 +17,14 @@ PAGE = 200
 class ChannelPolicy:
     name: str
     lines: tuple[str, ...]
+    # The channel the policy filters, e.g. "main"; None for upload channels.
+    source: str | None
 
 
 @dataclass(frozen=True)
 class FileStatus:
     subdir: str
-    name: str
-    version: str
-    build: str
-    build_number: int
-    depends: tuple[str, ...]
+    fn: str
     removed: bool
     reason: str | None
 
@@ -106,29 +104,29 @@ def policy_lines(raw_filter: dict[str, Any], schema_version: int = 1) -> list[st
     return [line for verb, node in sections if node for line in _section(verb, node)]
 
 
-def parse_versions(payload: dict[str, Any], name: str) -> list[str] | None:
-    """Versions the unfiltered source has for ``name``, newest first.
+@dataclass(frozen=True)
+class ChannelDetails:
+    policy_id: str | None
+    policy_name: str | None
+    source: str | None
 
-    None means the package does not exist upstream at all.
-    """
-    for item in payload.get("items", []):
-        if item.get("name") == name:
-            return list(item.get("available_versions", []))
-    return None
+
+def parse_details(payload: dict[str, Any]) -> ChannelDetails:
+    policy = payload.get("assigned_policy") or {}
+    sources = payload.get("sources") or []
+    return ChannelDetails(
+        policy.get("id"), policy.get("name"), sources[0] if sources else None
+    )
 
 
 def parse_files(payload: dict[str, Any]) -> list[FileStatus]:
     files = []
     for item in payload.get("items", []):
-        record = item.get("metadata", {}).get("repodata_record.json", {})
+        subdir, _, fn = item["ckey"].partition("/")
         files.append(
             FileStatus(
-                subdir=record.get("subdir") or item["ckey"].split("/")[0],
-                name=record["name"],
-                version=record["version"],
-                build=record["build"],
-                build_number=record.get("build_number") or 0,
-                depends=tuple(record.get("depends") or ()),
+                subdir=subdir,
+                fn=fn,
                 removed=bool(item.get("removed_by_policy")),
                 reason=item.get("removed_reason"),
             )
@@ -156,27 +154,21 @@ class PolicyApi:
         return response.json()
 
     def channel_policy(self, org: str, channel: str) -> ChannelPolicy | None:
-        current = self._get(
-            f"/api/organizations/{org}/channel-policies/{org}/{channel}/current"
+        details = parse_details(
+            self._get(f"/api/organizations/{org}/channels/{org}/{channel}/details")
         )
-        policy_id = current.get("policy_id")
-        if not policy_id:
+        if not details.policy_id:
             return None
         # repo-policies/v2/{id} rejects schema v1 policies; the unversioned
         # route returns either schema.
-        policy = self._get(f"/api/organizations/{org}/repo-policies/{policy_id}")
+        policy = self._get(
+            f"/api/organizations/{org}/repo-policies/{details.policy_id}"
+        )
         lines = policy_lines(
             policy.get("filter") or {}, policy.get("schema_version") or 1
         )
-        name = policy.get("name") or current["policy_name"]
-        return ChannelPolicy(name, tuple(lines))
-
-    def versions(self, org: str, channel: str, name: str) -> list[str] | None:
-        payload = self._get(
-            f"/api/organizations/{org}/channels/{org}/{channel}/artifacts",
-            only_names=name,
-        )
-        return parse_versions(payload, name)
+        name = policy.get("name") or details.policy_name or details.policy_id
+        return ChannelPolicy(name, tuple(lines), details.source)
 
     def files(
         self, org: str, channel: str, name: str, version: str

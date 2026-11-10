@@ -1,0 +1,13 @@
+{
+ "assigned_policy": {
+  "id": "00000000-0000-0000-0000-000000000001",
+  "name": "secure",
+  "state": "scheduled"
+ },
+ "name": "acme/analysts",
+ "privacy": "internal",
+ "sources": [
+  "main"
+ ],
+ "type": "virtual"
+}
