@@ -10,6 +10,7 @@ from conda.models.records import PackageRecord
 from anaconda_policy_explainer.api import ChannelPolicy
 from anaconda_policy_explainer.api import parse_files
 from anaconda_policy_explainer.channels import PolicyChannel
+from anaconda_policy_explainer.report import REQUESTED
 from anaconda_policy_explainer.report import Entry
 from anaconda_policy_explainer.report import cve_summary
 from anaconda_policy_explainer.report import file_status
@@ -46,12 +47,12 @@ SOLUTION = (PYTHON, URLLIB3, CFFI)
 
 
 def test_requested():
-    assert why(URLLIB3, SOLUTION, [MatchSpec("urllib3=2.6")]) == "requested"
+    assert why(URLLIB3, SOLUTION, [MatchSpec("urllib3=2.6")]) == REQUESTED
 
 
 def test_needed_by_solution_records():
     assert why(PYTHON, SOLUTION, [MatchSpec("urllib3")]) == (
-        "by cffi-2.1.1-py313h3b52fac_0 (+1)"
+        "cffi-2.1.1-py313h3b52fac_0 (+1)"
     )
 
 
@@ -97,19 +98,19 @@ def test_render_section():
     entries = [
         Entry(
             "python-3.13.11-hcf712cf_100_cp313",
-            "by cffi-2.1.1-py313h3b52fac_0",
+            "cffi-2.1.1-py313h3b52fac_0",
             True,
             "CVE score of 9.8 is greater than 7",
             ("active", "active", "reported", "cleared"),
         ),
         Entry(
             "urllib3-2.6.1-py313h06a4308_0",
-            "requested",
+            REQUESTED,
             True,
             "CVE score of 8.9 is greater than 7",
             ("active", "reported", "cleared"),
         ),
-        Entry("zstd-1.5.8-h0_0", "by python-3.13.11-hcf712cf_100_cp313", False, None),
+        Entry("zstd-1.5.8-h0_0", "python-3.13.11-hcf712cf_100_cp313", False, None),
     ]
     expected = (Path(__file__).parent / "data" / "report-section.txt").read_text()
     assert render(CHANNEL, POLICY, entries, ["a note"], width=140) == expected.rstrip(
@@ -122,7 +123,7 @@ def test_render_fits_width(width):
     entries = [
         Entry(
             "python-3.13.11-hcf712cf_100_cp313",
-            "by cffi-2.1.1-py313h3b52fac_0",
+            "cffi-2.1.1-py313h3b52fac_0",
             True,
             "CVE score of 9.8 is greater than 7",
             ("active", "reported"),
@@ -135,3 +136,21 @@ def test_render_fits_width(width):
 
 def test_render_nothing():
     assert render(CHANNEL, POLICY, []) is None
+
+
+def test_grid_lines_dim_only_with_color():
+    entries = [Entry("zstd-1.5.8-h0_0", REQUESTED, True, None, ("cleared",))]
+    plain = render(CHANNEL, POLICY, entries, width=100)
+    styled = render(CHANNEL, POLICY, entries, width=100, color=True)
+    assert plain is not None and "\x1b[" not in plain
+    assert styled is not None and "\x1b[2m" in styled
+
+
+def test_unchecked_build_keeps_its_row():
+    entries = [
+        Entry("xz-5.8.4-h9596fca_0", REQUESTED, False, "not checked (HTTPError)")
+    ]
+    text = render(CHANNEL, POLICY, entries, width=120)
+    assert text is not None
+    assert "xz-5.8.4-h9596fca_0" in text
+    assert "not checked (HTTPError)" in text

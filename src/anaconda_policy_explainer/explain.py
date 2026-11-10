@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import logging
+import sys
 from collections.abc import Iterable
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
@@ -26,6 +28,8 @@ from .resolve import taken_from
 from .resolve import unfiltered_solve
 from .source import local_channel
 from .source import unfiltered_url
+
+log = logging.getLogger(__name__)
 
 WORKERS = 8
 BUDGET = 30.0  # seconds for API lookups per channel
@@ -65,9 +69,9 @@ def _entries(
     records: list[PackageRecord],
     solution: tuple[PackageRecord, ...],
     requested: list[MatchSpec],
-) -> tuple[list[Entry], int]:
-    """Entries checked against the API within the time budget, and how many
-    were not checked."""
+) -> list[Entry]:
+    """One entry per record; records the API could not check within the time
+    budget are kept, marked as not checked."""
 
     def entry(record: PackageRecord) -> Entry:
         files = policed.api.files(
@@ -82,12 +86,24 @@ def _entries(
             status.cve_statuses if status else (),
         )
 
+    def unchecked(record: PackageRecord, cause: str) -> Entry:
+        log.debug("could not check %s: %s", dist(record), cause)
+        reason = f"not checked ({cause})"
+        return Entry(dist(record), why(record, solution, requested), False, reason)
+
     pool = ThreadPoolExecutor(WORKERS)
-    futures = [pool.submit(entry, record) for record in records]
-    done, pending = wait(futures, timeout=BUDGET)
+    futures = {pool.submit(entry, record): record for record in records}
+    done, _ = wait(futures, timeout=BUDGET)
     pool.shutdown(wait=False, cancel_futures=True)
-    entries = [f.result() for f in futures if f in done and f.exception() is None]
-    return entries, len(pending)
+    entries = []
+    for future, record in futures.items():
+        if future not in done:
+            entries.append(unchecked(record, f"no answer within {BUDGET:.0f}s"))
+        elif error := future.exception():
+            entries.append(unchecked(record, type(error).__name__))
+        else:
+            entries.append(future.result())
+    return entries
 
 
 def explain(solve: Solve) -> list[str]:
@@ -109,11 +125,10 @@ def explain(solve: Solve) -> list[str]:
     sections = []
     for p in policed:
         records = taken_from(solution, local[p.source_url])
-        entries, unchecked = _entries(p, records, solution, requested)
+        entries = _entries(p, records, solution, requested)
         notes = _site_note(p.channel)
-        if unchecked:
-            notes.append(f"{unchecked} more packages not checked within {BUDGET:.0f}s")
-        section = render(p.channel, p.policy, entries, notes)
+        color = sys.stderr.isatty() and not context.json
+        section = render(p.channel, p.policy, entries, notes, color=color)
         if section:
             sections.append(section)
     return sections

@@ -142,4 +142,4 @@ def test_pinned_environment_blocks_only_its_pins(conda, solver: str, tmp_path: P
     removed = blocked(output)
     assert removed
     assert set(removed) <= pinned
-    assert all(row[1] == "requested" for row in rows(output) if row[0] in removed)
+    assert all(row[1] == "your request" for row in rows(output) if row[0] in removed)

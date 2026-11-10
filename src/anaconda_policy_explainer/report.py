@@ -20,6 +20,7 @@ from .api import FileStatus
 from .channels import PolicyChannel
 
 INDENT = " " * 6  # aligns under conda's "  - (hint_code) " hint prefix
+REQUESTED = "your request"
 
 _CVE_REASON = re.compile(r"CVE score of ([\d.]+) is greater than ([\d.]+)")
 
@@ -44,9 +45,9 @@ def why(
     solution: Iterable[PackageRecord],
     requested: Iterable[MatchSpec],
 ) -> str:
-    """ "requested", or which packages in the solution depend on ``record``."""
+    """REQUESTED, or the packages in the solution that depend on ``record``."""
     if any(spec.name == record.name and spec.match(record) for spec in requested):
-        return "requested"
+        return REQUESTED
     parents = sorted(
         dist(other)
         for other in solution
@@ -59,7 +60,7 @@ def why(
     if not parents:
         return "dependency"
     others = len(parents) - 1
-    return f"by {parents[0]}" + (f" (+{others})" if others else "")
+    return parents[0] + (f" (+{others})" if others else "")
 
 
 def file_status(
@@ -99,20 +100,26 @@ def cve_summary(statuses: Iterable[str]) -> str:
     return "\n".join(f"{counts[status]} {status}" for status in order if counts[status])
 
 
-def _table(entries: list[Entry], width: int) -> list[str]:
-    table = Table(box=box.SQUARE)
+def _table(entries: list[Entry], width: int, color: bool) -> list[str]:
+    table = Table(box=box.SQUARE, show_lines=True, border_style="dim")
     table.add_column("Package", overflow="fold")
-    table.add_column("Needed", overflow="fold")
+    table.add_column("Required by", overflow="fold")
     table.add_column("Reason")
     table.add_column("CVEs", no_wrap=True)
     for e in entries:
         if e.removed:
             reason = shorten([e.reason]) if e.reason else "removed by policy"
         else:
-            reason = "not in channel yet"
+            reason = e.reason or "not in channel yet"
         table.add_row(e.label, e.why, reason, cve_summary(e.cve_statuses))
     out = io.StringIO()
-    console = Console(file=out, width=width, color_system=None, highlight=False)
+    console = Console(
+        file=out,
+        width=width,
+        color_system="standard" if color else None,
+        force_terminal=color,
+        highlight=False,
+    )
     console.print(table)
     return out.getvalue().rstrip("\n").splitlines()
 
@@ -123,13 +130,15 @@ def render(
     entries: Iterable[Entry],
     notes: Iterable[str] = (),
     width: int | None = None,
+    color: bool = False,
 ) -> str | None:
     """Report section for one channel policy, or None if it explains nothing.
 
-    Rendered as plain text: conda prints hint text as given.
+    conda prints hint text as given, so styling (dim grid lines) is only
+    added when ``color`` is set, i.e. when conda writes to a terminal.
     """
     ordered = sorted(
-        entries, key=lambda e: (not e.removed, e.why != "requested", e.label)
+        entries, key=lambda e: (not e.removed, e.why != REQUESTED, e.label)
     )
     if not ordered:
         return None
@@ -138,7 +147,7 @@ def render(
     lines = [
         f'{channel.org}/{channel.channel} is filtered by policy "{policy.name}"',
         *(f"{INDENT}{line}" for line in policy.lines),
-        *(f"{INDENT}{line}" for line in _table(ordered, width)),
+        *(f"{INDENT}{line}" for line in _table(ordered, width, color)),
         *(f"{INDENT}note: {note}" for note in notes),
     ]
     return "\n".join(lines)
