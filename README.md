@@ -17,25 +17,24 @@ Next steps:
       removes packages where:
         cve_score > 7
       blocked:
-        urllib3=2.6.0 (requested)
-          2.6.0 removed: CVE 8.9 > 7
+        urllib3-2.6.0-py313h06a4308_0 (requested): CVE 8.9 > 7
 ```
 
-When the cause is a dependency, the report names it and what needed it:
+For an environment, the report lists every build the policy removed that the environment needs, and what needed it:
 
 ```
-LibMambaUnsatisfiableError: Encountered problems while solving:
-  - nothing provides jinja2 needed by altair-6.3.0-py313h06a4308_0
-...
 Next steps:
   - (anaconda_channel_policy) acme/analysts is filtered by policy "secure"
       removes packages where:
         cve_score > 7
       blocked:
-        jinja2 (needed by altair-6.3.0-py313h06a4308_0 and 17 others)
-          3.1.6 removed: CVE 8.6 > 7
-          3.1.5 removed: CVE 8.6 > 7
-          3.1.4 removed: CVE 8.6 > 7
+        jinja2-3.1.6-py313h06a4308_1 (requested): CVE 8.6 > 7
+        python-3.13.18-h3ef32e2_100_cp313 (requested): CVE 7.2 > 7
+        urllib3-2.8.0-py313h06a4308_1 (requested): CVE 8.9 > 7
+        bzip2-1.0.8-h5eee18b_6 (needed by python-3.13.18-h3ef32e2_100_cp313): CVE 9.8 > 7
+        openssl-3.5.9-h1b28b03_0 (needed by python-3.13.18-h3ef32e2_100_cp313): CVE 9.1 > 7
+        zlib-1.3.2-h47b2149_0 (needed by sqlite-3.53.4-h795bf6d_0 and 1 others): CVE 7.5 > 7
+        ...
 ```
 
 The policy is shown as it is stored, one rule per line, with nested groups indented:
@@ -58,19 +57,24 @@ The policy is shown as it is stored, one rule per line, with nested groups inden
 pip install anaconda-policy-explainer
 ```
 
-The plugin needs conda 26.7 or newer (for the `conda_error_hints` hook) and works with the classic, libmamba and rattler solvers. It reads the channel policy with your [anaconda-auth](https://github.com/anaconda/anaconda-auth) credentials: `anaconda auth login`, or an API key in `ANACONDA_AUTH_API_KEY`.
+The plugin needs conda 26.7 or newer (for the `conda_error_hints` hook) and works with the classic, libmamba and rattler solvers. It reads channel policies with your [anaconda-auth](https://github.com/anaconda/anaconda-auth) credentials: `anaconda auth login`, or an API key in `ANACONDA_AUTH_API_KEY`.
+
+The plugin compares your channel with the public channel it is built from, such as `https://repo.anaconda.com/pkgs/main`. Use of that channel is subject to [Anaconda's Terms of Service](https://www.anaconda.com/legal/terms/terms-of-service), which must be accepted.
 
 ## How it works
 
-1. A pre-solve hook records the specs you asked for.
-2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) among the channels conda used.
-3. It walks your specs and their dependencies through the filtered repodata conda already downloaded, plus the packages installed in the target environment, and collects the specs nothing available can satisfy. Like a solver, it only follows the newest three versions of each package.
-4. For each blocked package it asks the Anaconda API which of its newest versions the channel policy removed, and why.
-5. It reports one section per channel policy. Packages that do not exist upstream at all are left out.
+1. A pre-solve hook records what the solve was asked to do: the specs, channels, target environment and platforms.
+2. When the solve fails with `PackagesNotFoundError` or `UnsatisfiableError`, the plugin looks for organization channels (`https://repo.anaconda.cloud/repo/<org>/<channel>`) among those channels and reads each channel's policy and source from the Anaconda API.
+3. For a channel built from `main`, `r`, `msys2`, `conda-forge` or an external mirror, it downloads the source's index through conda's repodata cache, for your platform and `noarch`, into a temporary local channel.
+4. It solves again with the same solver, specs and environment, with the local channel added at the lowest priority and channel priority set to flexible. The solver only takes packages from the local channel when your channels cannot provide them, so those packages are what the environment needs from outside your channels.
+5. For each of those packages it asks the Anaconda API whether the channel policy removed that exact file, and why. Packages the policy did not remove (for example, published since the policy last ran) are listed as not in the channel yet.
+6. It reports one section per channel policy.
 
 API calls go to the domain anaconda-auth uses for the channel (`anaconda.com` for `repo.anaconda.cloud`, or a `channel_settings` `auth_domain`). If that differs from your default anaconda-auth site, the report says so. Lookups for one channel stop after 30 seconds; the report then says how many packages were not checked.
 
-If anything goes wrong, the plugin stays silent and conda's error is shown unchanged.
+If the second solve also fails, the failure is not caused by the policy alone, and the plugin stays silent. If anything else goes wrong, the plugin also stays silent and conda's error is shown unchanged.
+
+Upload channels and channels built from sources without a public copy (such as `main-x`) are not explained yet.
 
 ## Development
 
@@ -90,13 +94,16 @@ pixi run conda create -n try --dry-run --override-channels \
     -c https://repo.anaconda.cloud/repo/<org>/<channel> <spec>
 ```
 
-The live tests run real conda with both solvers against such a channel. They are skipped unless you name the channel and a spec its policy removed:
+The live tests run real conda with both solvers against such a channel, with an empty `HOME` so your own configuration cannot satisfy the request. They are skipped unless you name the channel, a spec its policy removed, and an API key:
 
 ```
 APE_LIVE_CHANNEL=https://repo.anaconda.cloud/repo/<org>/<channel> \
 APE_LIVE_REMOVED_SPEC=urllib3=2.6.0 \
+ANACONDA_AUTH_API_KEY=$(anaconda auth api-key) \
 pixi run test-live
 ```
+
+`tests/data/environments` holds environment files pinned against one policy channel, used by the live tests to check exact results.
 
 ## License
 
