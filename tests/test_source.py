@@ -39,6 +39,32 @@ def test_no_public_source_outside_prod():
     assert unfiltered_url(STAGE, "main") is None
 
 
+OWN = "https://repo.anaconda.cloud/repo/acme/main-unfiltered"
+
+
+@pytest.mark.parametrize(
+    "configured, source, expected",
+    [
+        ({"main": OWN + "/"}, "main", OWN),
+        ({"main-x": OWN}, "main-x", OWN),
+        ({"main-x": OWN}, "main", None),
+        ({"main": "https://repo.anaconda.cloud/repo/other/main"}, "main", None),
+        ({"main": "https://repo.anaconda.com/pkgs/main"}, "main", None),
+    ],
+)
+def test_configured_sources_replace_public(configured, source, expected):
+    assert unfiltered_url(PROD, source, configured) == expected
+
+
+def test_configured_sources_from_config_toml(tmp_path, monkeypatch):
+    from anaconda_policy_explainer.config import ExplainerConfig
+
+    toml = tmp_path / "config.toml"
+    toml.write_text(f'[plugin.policy_explainer.sources]\nmain = "{OWN}"\n')
+    monkeypatch.setenv("ANACONDA_CONFIG_TOML", str(toml))
+    assert ExplainerConfig().sources == {"main": OWN}
+
+
 UNFILTERED = (Path(__file__).parent / "data" / "unfiltered-channel").as_uri()
 
 

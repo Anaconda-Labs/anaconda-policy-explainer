@@ -19,6 +19,7 @@ from .api import default_site_domain
 from .api import repo_org_id
 from .channels import PolicyChannel
 from .channels import policy_channels
+from .config import ExplainerConfig
 from .plugin import Solve
 from .report import Entry
 from .report import dist
@@ -53,6 +54,7 @@ def _with_org(channel: PolicyChannel, api: PolicyApi) -> PolicyChannel | None:
 
 
 def _policed(channels: Iterable[PolicyChannel]) -> list[_Policed]:
+    configured = ExplainerConfig().sources
     found = []
     for candidate in channels:
         api = PolicyApi(candidate.auth_domain)
@@ -60,7 +62,9 @@ def _policed(channels: Iterable[PolicyChannel]) -> list[_Policed]:
         if channel is None:
             continue
         policy = api.channel_policy(channel)
-        source_url = unfiltered_url(channel, policy.source) if policy else None
+        source_url = (
+            unfiltered_url(channel, policy.source, configured) if policy else None
+        )
         if policy and source_url:
             found.append(_Policed(channel, policy, api, source_url))
     return found

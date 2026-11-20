@@ -12,6 +12,7 @@ import hashlib
 import os
 import shutil
 from collections.abc import Iterable
+from collections.abc import Mapping
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -21,6 +22,7 @@ from platformdirs import user_cache_dir
 
 from .channels import REPO_HOST
 from .channels import PolicyChannel
+from .channels import parse_org_channel
 
 PUBLIC_SOURCES = {
     "main": "https://repo.anaconda.com/pkgs/main",
@@ -30,13 +32,25 @@ PUBLIC_SOURCES = {
 }
 
 
-def unfiltered_url(channel: PolicyChannel, source: str | None) -> str | None:
-    """Public channel with the same packages as ``source``, if there is one.
+def unfiltered_url(
+    channel: PolicyChannel,
+    source: str | None,
+    configured: Mapping[str, str] | None = None,
+) -> str | None:
+    """Channel with the same packages as ``source``, if there is one.
 
-    Source names map to Anaconda's public channels only for the production
-    repo host; external mirrors already name their upstream URL.
+    With ``configured`` sources, only those are used, and only when they are
+    channels of ``channel``'s organization. Otherwise source names map to
+    Anaconda's public channels, only for the production repo host; external
+    mirrors already name their upstream URL.
     """
     if not source or urlparse(channel.url).hostname != REPO_HOST:
+        return None
+    if configured:
+        url = configured.get(source)
+        parsed = parse_org_channel(url) if url else None
+        if url and parsed and parsed[0] == channel.org:
+            return url.rstrip("/")
         return None
     if urlparse(source).scheme in ("http", "https"):
         return source.rstrip("/")
