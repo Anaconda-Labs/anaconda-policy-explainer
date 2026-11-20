@@ -64,6 +64,17 @@ The plugin needs conda 26.7 or newer (for the `conda_error_hints` hook) and work
 
 The plugin compares your channel with the public channel it is built from, such as `https://repo.anaconda.com/pkgs/main`. Use of that channel is subject to [Anaconda's Terms of Service](https://www.anaconda.com/legal/terms/terms-of-service), which must be accepted.
 
+### Unfiltered channels in your organization
+
+Instead of the public channels, the plugin can compare with an unfiltered channel in your own organization, for example a mirror of `main` without a policy. Name it per source in `~/.anaconda/config.toml`:
+
+```toml
+[plugin.policy_explainer.sources]
+main = "https://repo.anaconda.cloud/repo/<org>/main-unfiltered"
+```
+
+The channel must belong to the same organization as the filtered channel, and you need read access to both. It is read with the same credentials conda uses. Once any source is configured, the public channels are no longer used: sources that are not configured are not explained. Anyone who can read the unfiltered channel can also install from it.
+
 ## How it works
 
 1. A pre-solve hook records what the solve was asked to do: the specs, channels, target environment and platforms.
